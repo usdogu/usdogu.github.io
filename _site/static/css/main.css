@@ -1,0 +1,16 @@
+body {
+  color: #333;
+  background: #efefef;
+}
+
+section {
+  padding-bottom: 32px;
+}
+
+ul, ol {
+  padding-left: 16px;
+}
+
+img {
+  max-width: 600px;
+}

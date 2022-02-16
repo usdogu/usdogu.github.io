@@ -1,0 +1,114 @@
+<html>
+  <html>
+  <head>
+    <meta charset="utf-8">
+    <title>Rust Akıllı İşaretçiler - My Site</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+    <script src="https://usdogu.github.io/static/js/main.js"></script>
+    <link rel="stylesheet" href="https://usdogu.github.io/static/css/main.css" type="text/css" media="screen" />
+    <style>
+    </style>
+  </head>
+
+  <body style="display: flex;">
+    <main style="width: 600px; margin: 0 auto; padding: 32px;">
+      <div><section></section><h1 id="Akıllı İşaretçiler (Smart Pointers) Nedir">Akıllı İşaretçiler (Smart Pointers) Nedir</h1><section><p>Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak
+<a href="https://doc.rust-lang.org/std/string/struct.String.html">String</a> tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.</p></section><h1 id="[[https://doc.rust-lang.org/std/boxed/index.html][Box<T>]] Akıllı İşaretçisi"><a href="https://doc.rust-lang.org/std/boxed/index.html">Box&lt;T&gt;</a> Akıllı İşaretçisi</h1><section><p>Verileri stack yerine <a href="https://scribe.rip/yigit-xcodeproj/stack-ve-heap-arasindaki-fark-nedir-stack-vs-heap-c61e3d463dd7">heap</a> üzerinde tutar. Aslında bu tipin çok da artıları yoktur</p><ul><li><p>Tutmak istediğiniz verinin boyutunun derleme anında bilinmediği durumlarda</p></li><li><p>Kopyalamak istemediğiniz büyük miktarda verinin sahipliğini değiştirmek istediğiniz durumlarda kullanılabilir.</p></li></ul><p>Kullanımı:</p><div class="org-src-container"><pre class="src src-rust">fn main() {
+    let b = Box::new(5);
+    println!(&quot;b = {}&quot;, b);
+}
+</pre></div><p>şeklindedir. Eğer C/C++ bilginiz varsa heap üzerinde tuttuğumuz veriyi free tarzı bir yapı kullanarak neden deallocate etmediğimizi sorabilirsiniz, bunun sebebi Rust&apos;ın değişken kapsam dışına çıktığında hem heap üzerindeki veriyi hem de stack üzerindeki heap&apos;teki verinin adresini tutan pointerı otomatik olarak silmesidir.</p></section><h1 id="[[https://doc.rust-lang.org/std/rc/index.html][Rc<T>]] Akıllı İşaretçisi"><a href="https://doc.rust-lang.org/std/rc/index.html">Rc&lt;T&gt;</a> Akıllı İşaretçisi</h1><section><p>Bir verinin birden fazla sahibi olduğu durumlarda kullanılır tutulan veri her klonlandığında referans sayısı bir artar ve tüm referanslar yok olduğunda tutulan veri silinir. Rc&lt;T&gt; tipini aile odasındaki bir TV olarak hayal edin, biri içeri girip TV izlemek istediğinde televizyonu açar ve diğerleri de odaya gelip televizyon izleyebilir ama son kişi de odadan çıkıcağında televizyonu kapatır çünkü artık kullanımda değildir değil mi? işte Rc&lt;T&gt; tipi de tam olarak bunu yapar.</p><div class="org-src-container"><pre class="src src-rust">use std::rc::Rc;
+
+fn main() {
+    let a = Rc::new(1);
+    println!(&quot;a&apos;nın başlangıçtaki referans sayısı = {}&quot;, Rc::strong_count(&amp;a));
+    let _b = Rc::clone(&amp;a);
+    println!(&quot;b&apos;den sonra referans sayısı = {}&quot;, Rc::strong_count(&amp;a));
+    {
+        let _c = Rc::clone(&amp;a);
+        println!(&quot;c&apos;den sonra referans sayısı = {}&quot;, Rc::strong_count(&amp;a));
+    }
+    println!(&quot;c kapsam dışına çıktıktan sonra referans sayısı = {}&quot;, Rc::strong_count(&amp;a));
+}
+</pre></div><p>Kendi bilgisayarınızda bu örnek kodu deneyerek Rc&apos;nin nasıl işlediğini daha iyi anlayabilirsiniz.</p><p>Not: Rc&lt;T&gt; tipini sadece tek threadlı uygulamalarda kullanabilirsiniz diğerleri için <a href="https://doc.rust-lang.org/std/sync/struct.Arc.html">Arc</a> yardımınıza koşar.</p></section><h1 id="[[https://doc.rust-lang.org/std/cell/index.html][RefCell<T>]] Akıllı İşaretçisi"><a href="https://doc.rust-lang.org/std/cell/index.html">RefCell&lt;T&gt;</a> Akıllı İşaretçisi</h1><section><p>RefCell&apos;i anlatmadan önce biraz Interior mutability nedir diye bahsetmek gerekiyor. Interior mutability, mutable bir referansınız olmayan bir veriyi değiştirmeye izin veren bir tasarım desenidir normalde bu işlem Rust&apos;ın kurallarına aykırıdır ama Cell&lt;T&gt; ve RefCell&lt;T&gt; tipleri sayesinde bunu yapabiliyoruz.</p><p>RefCell kullanırken dikkat etmeniz gereken şey borrowing kurallarının derleme zamanında değil de çalışma zamanında yakalandığını unutmamaktır bu hataları fark etmeyi zorlaştırabilir bu yüzden gerçekten ihtiyacınız olmadığında RefCell yerine Cell kullanmak daha mantıklıdır.
+Aşağıdaki örnek programa bakalım:</p><div class="org-src-container"><pre class="src src-rust">fn main() {
+    let x = 5;
+    let y = &amp;mut x;
+}
+</pre></div><p>mutable olarak belirlenmeyen bir değişkene mutable bir referans almaya çalıştığımızı anlayan derleyici kodu reddetti peki şunu deneyelim:</p><div class="org-src-container"><pre class="src src-rust">use std::cell::RefCell;
+fn main() {
+    let x = RefCell::new(5);
+    let mut y = x.borrow_mut();
+    println!(&quot;değiştirmeden önce x&apos;in değeri = {}&quot;,*y);
+    *y = 10;
+    println!(&quot;değiştirdikten sonra x&apos;in değeri = {}&quot;,*y);
+}
+</pre></div><p>çalıştı değil mi? işte interior mutability budur. Bu deseni örneğin sizi &amp;self almaya zorlayan traitlerde selfi RefCell olarak tanımlayarak kullanabilirsiniz.</p></section><h1 id="Kaynaklar">Kaynaklar</h1><section><ul><li><p>https://doc.rust-lang.org/book/ch15-00-smart-pointers.html</p></li></ul></section></div>
+    </main>
+
+    <aside style="padding: 32px; width: 300px;">
+     <section><ol><li><a href="#Akıllı İşaretçiler (Smart Pointers) Nedir">Akıllı İşaretçiler (Smart Pointers) Nedir</a></li><li><a href="#[[https://doc.rust-lang.org/std/boxed/index.html][Box<T>]] Akıllı İşaretçisi"><span>Box&lt;T&gt;</span> Akıllı İşaretçisi</a></li><li><a href="#[[https://doc.rust-lang.org/std/rc/index.html][Rc<T>]] Akıllı İşaretçisi"><span>Rc&lt;T&gt;</span> Akıllı İşaretçisi</a></li><li><a href="#[[https://doc.rust-lang.org/std/cell/index.html][RefCell<T>]] Akıllı İşaretçisi"><span>RefCell&lt;T&gt;</span> Akıllı İşaretçisi</a></li><li><a href="#Kaynaklar">Kaynaklar</a></li></ol></section>
+      
+  
+
+      
+  
+
+      
+  
+    <section>
+      <details open>
+        <summary>Sitemap</summary>
+        <ul>
+          
+            <li>
+              <a href=https://usdogu.github.io/about.html>About
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href=https://usdogu.github.io/index.html>Index
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href=https://usdogu.github.io/rust-akıllı-işaretçiler.html>Rust akıllı i̇şaretçiler
+                
+              </a>
+            </li>
+          
+        </ul>
+      </details>
+    </section>
+  
+
+      
+  
+    <section>
+      <details open>
+        <summary>Tags</summary>
+        <ul>
+          
+            <li>
+              <a href=https://usdogu.github.io/tags/rust.html>Rust
+                
+              </a>
+            </li>
+          
+            <li>
+              <a href=https://usdogu.github.io/tags/turkish.html>Turkish
+                
+              </a>
+            </li>
+          
+        </ul>
+      </details>
+    </section>
+  
+
+    </aside>
+  </body>
+</html>
