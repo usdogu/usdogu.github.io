@@ -12,3 +12,11 @@ email = "uspro@disroot.org"
 
 [params]
 centerTheme = true
+
+[languages]
+[languages.en]
+[languages.en.menu]
+[[languages.en.menu.main]]
+idenfitifer = "RSS"
+name = "RSS"
+url = "/index.xml"
