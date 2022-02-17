@@ -1,0 +1,11 @@
+baseURL = '/'
+languageCode = 'en-us'
+title = 'My Blog'
+theme = "terminal"
+
+[markup.goldmark.renderer]
+  unsafe = true
+
+
+[params]
+centerTheme = true
