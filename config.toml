@@ -6,7 +6,5 @@ theme = "terminal"
 [markup.goldmark.renderer]
   unsafe = true
 
-disqusShortname = "usdogu"
-
 [params]
 centerTheme = true
