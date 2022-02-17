@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?><rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>My Blog</title><link>/</link><description>Recent content on My Blog</description><generator>Hugo -- gohugo.io</generator><language>en-us</language><lastBuildDate>Wed, 16 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="/index.xml" rel="self" type="application/rss+xml"/><item><title>Rust Akıllı İşaretçiler</title><link>/posts/rust-ak%C4%B1ll%C4%B1-i%C5%9Faret%C3%A7iler/</link><pubDate>Wed, 16 Feb 2022 00:00:00 +0000</pubDate><guid>/posts/rust-ak%C4%B1ll%C4%B1-i%C5%9Faret%C3%A7iler/</guid><description>Akıllı İşaretçiler (Smart Pointers) Nedir Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak String tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.
+Box&amp;lt;T&amp;gt; Akıllı İşaretçisi Verileri stack yerine heap üzerinde tutar. Aslında bu tipin çok da artıları yoktur
+Tutmak istediğiniz verinin boyutunun derleme anında bilinmediği durumlarda Kopyalamak istemediğiniz büyük miktarda verinin sahipliğini değiştirmek istediğiniz durumlarda kullanılabilir.</description><content>&lt;h2 id="akıllı-i̇şaretçiler--smart-pointers--nedir">Akıllı İşaretçiler (Smart Pointers) Nedir&lt;/h2>
+&lt;p>Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak
+&lt;a href="https://doc.rust-lang.org/std/string/struct.String.html">String&lt;/a> tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.&lt;/p>
+&lt;h2 id="box-t-akıllı-i̇şaretçisi">&lt;a href="https://doc.rust-lang.org/std/boxed/index.html">Box&amp;lt;T&amp;gt;&lt;/a> Akıllı İşaretçisi&lt;/h2>
+&lt;p>Verileri stack yerine &lt;a href="https://scribe.rip/yigit-xcodeproj/stack-ve-heap-arasindaki-fark-nedir-stack-vs-heap-c61e3d463dd7">heap&lt;/a> üzerinde tutar. Aslında bu tipin çok da artıları yoktur&lt;/p>
+&lt;ul>
+&lt;li>Tutmak istediğiniz verinin boyutunun derleme anında bilinmediği durumlarda&lt;/li>
+&lt;li>Kopyalamak istemediğiniz büyük miktarda verinin sahipliğini değiştirmek istediğiniz durumlarda kullanılabilir.&lt;/li>
+&lt;/ul>
+&lt;p>Kullanımı:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-rust" data-lang="rust">&lt;span style="color:#66d9ef">fn&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;span style="color:#66d9ef">let&lt;/span> b &lt;span style="color:#f92672">=&lt;/span> Box::new(&lt;span style="color:#ae81ff">5&lt;/span>);
+println!(&lt;span style="color:#e6db74">&amp;#34;b = {}&amp;#34;&lt;/span>, b);
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>şeklindedir. Eğer C/C++ bilginiz varsa heap üzerinde tuttuğumuz veriyi free tarzı bir yapı kullanarak neden deallocate etmediğimizi sorabilirsiniz, bunun sebebi Rust&amp;rsquo;ın değişken kapsam dışına çıktığında hem heap üzerindeki veriyi hem de stack üzerindeki heap&amp;rsquo;teki verinin adresini tutan pointerı otomatik olarak silmesidir.&lt;/p>
+&lt;h2 id="rc-t-akıllı-i̇şaretçisi">&lt;a href="https://doc.rust-lang.org/std/rc/index.html">Rc&amp;lt;T&amp;gt;&lt;/a> Akıllı İşaretçisi&lt;/h2>
+&lt;p>Bir verinin birden fazla sahibi olduğu durumlarda kullanılır tutulan veri her klonlandığında referans sayısı bir artar ve tüm referanslar yok olduğunda tutulan veri silinir. Rc&amp;lt;T&amp;gt; tipini aile odasındaki bir TV olarak hayal edin, biri içeri girip TV izlemek istediğinde televizyonu açar ve diğerleri de odaya gelip televizyon izleyebilir ama son kişi de odadan çıkıcağında televizyonu kapatır çünkü artık kullanımda değildir değil mi? işte Rc&amp;lt;T&amp;gt; tipi de tam olarak bunu yapar.&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-rust" data-lang="rust">&lt;span style="color:#66d9ef">use&lt;/span> std::rc::Rc;
+&lt;span style="color:#66d9ef">fn&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;span style="color:#66d9ef">let&lt;/span> a &lt;span style="color:#f92672">=&lt;/span> Rc::new(&lt;span style="color:#ae81ff">1&lt;/span>);
+println!(&lt;span style="color:#e6db74">&amp;#34;a&amp;#39;nın başlangıçtaki referans sayısı = {}&amp;#34;&lt;/span>, Rc::strong_count(&lt;span style="color:#f92672">&amp;amp;&lt;/span>a));
+&lt;span style="color:#66d9ef">let&lt;/span> _b &lt;span style="color:#f92672">=&lt;/span> Rc::clone(&lt;span style="color:#f92672">&amp;amp;&lt;/span>a);
+println!(&lt;span style="color:#e6db74">&amp;#34;b&amp;#39;den sonra referans sayısı = {}&amp;#34;&lt;/span>, Rc::strong_count(&lt;span style="color:#f92672">&amp;amp;&lt;/span>a));
+{
+&lt;span style="color:#66d9ef">let&lt;/span> _c &lt;span style="color:#f92672">=&lt;/span> Rc::clone(&lt;span style="color:#f92672">&amp;amp;&lt;/span>a);
+println!(&lt;span style="color:#e6db74">&amp;#34;c&amp;#39;den sonra referans sayısı = {}&amp;#34;&lt;/span>, Rc::strong_count(&lt;span style="color:#f92672">&amp;amp;&lt;/span>a));
+}
+println!(&lt;span style="color:#e6db74">&amp;#34;c kapsam dışına çıktıktan sonra referans sayısı = {}&amp;#34;&lt;/span>, Rc::strong_count(&lt;span style="color:#f92672">&amp;amp;&lt;/span>a));
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>Kendi bilgisayarınızda bu örnek kodu deneyerek Rc&amp;rsquo;nin nasıl işlediğini daha iyi anlayabilirsiniz.&lt;/p>
+&lt;p>Not: Rc&amp;lt;T&amp;gt; tipini sadece tek threadlı uygulamalarda kullanabilirsiniz diğerleri için &lt;a href="https://doc.rust-lang.org/std/sync/struct.Arc.html">Arc&lt;/a> yardımınıza koşar.&lt;/p>
+&lt;h2 id="refcell-t-akıllı-i̇şaretçisi">&lt;a href="https://doc.rust-lang.org/std/cell/index.html">RefCell&amp;lt;T&amp;gt;&lt;/a> Akıllı İşaretçisi&lt;/h2>
+&lt;p>RefCell&amp;rsquo;i anlatmadan önce biraz Interior mutability nedir diye bahsetmek gerekiyor. Interior mutability, mutable bir referansınız olmayan bir veriyi değiştirmeye izin veren bir tasarım desenidir normalde bu işlem Rust&amp;rsquo;ın kurallarına aykırıdır ama Cell&amp;lt;T&amp;gt; ve RefCell&amp;lt;T&amp;gt; tipleri sayesinde bunu yapabiliyoruz.&lt;/p>
+&lt;p>RefCell kullanırken dikkat etmeniz gereken şey borrowing kurallarının derleme zamanında değil de çalışma zamanında yakalandığını unutmamaktır bu hataları fark etmeyi zorlaştırabilir bu yüzden gerçekten ihtiyacınız olmadığında RefCell yerine Cell kullanmak daha mantıklıdır.
+Aşağıdaki örnek programa bakalım:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-rust" data-lang="rust">&lt;span style="color:#66d9ef">fn&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;span style="color:#66d9ef">let&lt;/span> x &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">5&lt;/span>;
+&lt;span style="color:#66d9ef">let&lt;/span> y &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#f92672">&amp;amp;&lt;/span>&lt;span style="color:#66d9ef">mut&lt;/span> x;
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>mutable olarak belirlenmeyen bir değişkene mutable bir referans almaya çalıştığımızı anlayan derleyici kodu reddetti peki şunu deneyelim:&lt;/p>
+&lt;div class="highlight">&lt;pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4">&lt;code class="language-rust" data-lang="rust">&lt;span style="color:#66d9ef">use&lt;/span> std::cell::RefCell;
+&lt;span style="color:#66d9ef">fn&lt;/span> &lt;span style="color:#a6e22e">main&lt;/span>() {
+&lt;span style="color:#66d9ef">let&lt;/span> x &lt;span style="color:#f92672">=&lt;/span> RefCell::new(&lt;span style="color:#ae81ff">5&lt;/span>);
+&lt;span style="color:#66d9ef">let&lt;/span> &lt;span style="color:#66d9ef">mut&lt;/span> y &lt;span style="color:#f92672">=&lt;/span> x.borrow_mut();
+println!(&lt;span style="color:#e6db74">&amp;#34;değiştirmeden önce x&amp;#39;in değeri = {}&amp;#34;&lt;/span>,&lt;span style="color:#f92672">*&lt;/span>y);
+&lt;span style="color:#f92672">*&lt;/span>y &lt;span style="color:#f92672">=&lt;/span> &lt;span style="color:#ae81ff">10&lt;/span>;
+println!(&lt;span style="color:#e6db74">&amp;#34;değiştirdikten sonra x&amp;#39;in değeri = {}&amp;#34;&lt;/span>,&lt;span style="color:#f92672">*&lt;/span>y);
+}
+&lt;/code>&lt;/pre>&lt;/div>&lt;p>çalıştı değil mi? işte interior mutability budur. Bu deseni örneğin sizi &amp;amp;self almaya zorlayan traitlerde selfi RefCell olarak tanımlayarak kullanabilirsiniz.&lt;/p>
+&lt;h2 id="kaynaklar">Kaynaklar&lt;/h2>
+&lt;ul>
+&lt;li>&lt;a href="https://doc.rust-lang.org/book/ch15-00-smart-pointers.html">https://doc.rust-lang.org/book/ch15-00-smart-pointers.html&lt;/a>&lt;/li>
+&lt;/ul></content></item></channel></rss>

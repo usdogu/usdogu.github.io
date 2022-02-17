@@ -1,0 +1,123 @@
+<!doctype html><html lang=en>
+<head>
+<title>Rust Akıllı İşaretçiler :: My Blog</title>
+<meta charset=utf-8>
+<meta name=viewport content="width=device-width,initial-scale=1">
+<meta name=description content="Rust Akıllı İşaretçileri üzerine notlar">
+<meta name=keywords content>
+<meta name=robots content="noodp">
+<link rel=canonical href=/posts/rust-ak%C4%B1ll%C4%B1-i%C5%9Faret%C3%A7iler/>
+<link rel=stylesheet href=/assets/style.css>
+<link rel=stylesheet href=assets/%25!s%28%3cnil%3e%29.css>
+<link rel=apple-touch-icon href=/img/apple-touch-icon-192x192.png>
+<link rel="shortcut icon" href=/img/favicon/orange.png>
+<meta name=twitter:card content="summary">
+<meta property="og:locale" content="en">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Rust Akıllı İşaretçiler">
+<meta property="og:description" content="Rust Akıllı İşaretçileri üzerine notlar">
+<meta property="og:url" content="/posts/rust-ak%C4%B1ll%C4%B1-i%C5%9Faret%C3%A7iler/">
+<meta property="og:site_name" content="My Blog">
+<meta property="og:image" content="img/favicon/%!s().png">
+<meta property="og:image:width" content="2048">
+<meta property="og:image:height" content="1024">
+<meta property="article:published_time" content="2022-02-16 00:00:00 +0000 UTC">
+</head>
+<body>
+<div class="container center headings--one-size">
+<header class=header>
+<div class=header__inner>
+<div class=header__logo>
+<a href=/>
+<div class=logo>
+Terminal
+</div>
+</a>
+</div>
+</div>
+</header>
+<div class=content>
+<div class=post>
+<h1 class=post-title>
+<a href=/posts/rust-ak%C4%B1ll%C4%B1-i%C5%9Faret%C3%A7iler/>Rust Akıllı İşaretçiler</a></h1>
+<div class=post-meta>
+<span class=post-date>
+2022-02-16
+</span>
+<span class=post-author>:: [Doğu Us]</span>
+</div>
+<span class=post-tags>
+#<a href=/tags/rust/>rust</a>&nbsp;
+#<a href=/tags/turkish/>turkish</a>&nbsp;
+</span>
+<div class=post-content><div>
+<h2 id=akıllı-i̇şaretçiler--smart-pointers--nedir>Akıllı İşaretçiler (Smart Pointers) Nedir<a href=#akıllı-i̇şaretçiler--smart-pointers--nedir class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak
+<a href=https://doc.rust-lang.org/std/string/struct.String.html>String</a> tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.</p>
+<h2 id=box-t-akıllı-i̇şaretçisi><a href=https://doc.rust-lang.org/std/boxed/index.html>Box&lt;T></a> Akıllı İşaretçisi<a href=#box-t-akıllı-i̇şaretçisi class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>Verileri stack yerine <a href=https://scribe.rip/yigit-xcodeproj/stack-ve-heap-arasindaki-fark-nedir-stack-vs-heap-c61e3d463dd7>heap</a> üzerinde tutar. Aslında bu tipin çok da artıları yoktur</p>
+<ul>
+<li>Tutmak istediğiniz verinin boyutunun derleme anında bilinmediği durumlarda</li>
+<li>Kopyalamak istemediğiniz büyük miktarda verinin sahipliğini değiştirmek istediğiniz durumlarda kullanılabilir.</li>
+</ul>
+<p>Kullanımı:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>let</span> b <span style=color:#f92672>=</span> Box::new(<span style=color:#ae81ff>5</span>);
+    println!(<span style=color:#e6db74>&#34;b = {}&#34;</span>, b);
+}
+</code></pre></div><p>şeklindedir. Eğer C/C++ bilginiz varsa heap üzerinde tuttuğumuz veriyi free tarzı bir yapı kullanarak neden deallocate etmediğimizi sorabilirsiniz, bunun sebebi Rust&rsquo;ın değişken kapsam dışına çıktığında hem heap üzerindeki veriyi hem de stack üzerindeki heap&rsquo;teki verinin adresini tutan pointerı otomatik olarak silmesidir.</p>
+<h2 id=rc-t-akıllı-i̇şaretçisi><a href=https://doc.rust-lang.org/std/rc/index.html>Rc&lt;T></a> Akıllı İşaretçisi<a href=#rc-t-akıllı-i̇şaretçisi class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>Bir verinin birden fazla sahibi olduğu durumlarda kullanılır tutulan veri her klonlandığında referans sayısı bir artar ve tüm referanslar yok olduğunda tutulan veri silinir. Rc&lt;T> tipini aile odasındaki bir TV olarak hayal edin, biri içeri girip TV izlemek istediğinde televizyonu açar ve diğerleri de odaya gelip televizyon izleyebilir ama son kişi de odadan çıkıcağında televizyonu kapatır çünkü artık kullanımda değildir değil mi? işte Rc&lt;T> tipi de tam olarak bunu yapar.</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>use</span> std::rc::Rc;
+
+<span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>let</span> a <span style=color:#f92672>=</span> Rc::new(<span style=color:#ae81ff>1</span>);
+    println!(<span style=color:#e6db74>&#34;a&#39;nın başlangıçtaki referans sayısı = {}&#34;</span>, Rc::strong_count(<span style=color:#f92672>&amp;</span>a));
+    <span style=color:#66d9ef>let</span> _b <span style=color:#f92672>=</span> Rc::clone(<span style=color:#f92672>&amp;</span>a);
+    println!(<span style=color:#e6db74>&#34;b&#39;den sonra referans sayısı = {}&#34;</span>, Rc::strong_count(<span style=color:#f92672>&amp;</span>a));
+    {
+        <span style=color:#66d9ef>let</span> _c <span style=color:#f92672>=</span> Rc::clone(<span style=color:#f92672>&amp;</span>a);
+        println!(<span style=color:#e6db74>&#34;c&#39;den sonra referans sayısı = {}&#34;</span>, Rc::strong_count(<span style=color:#f92672>&amp;</span>a));
+    }
+    println!(<span style=color:#e6db74>&#34;c kapsam dışına çıktıktan sonra referans sayısı = {}&#34;</span>, Rc::strong_count(<span style=color:#f92672>&amp;</span>a));
+}
+</code></pre></div><p>Kendi bilgisayarınızda bu örnek kodu deneyerek Rc&rsquo;nin nasıl işlediğini daha iyi anlayabilirsiniz.</p>
+<p>Not: Rc&lt;T> tipini sadece tek threadlı uygulamalarda kullanabilirsiniz diğerleri için <a href=https://doc.rust-lang.org/std/sync/struct.Arc.html>Arc</a> yardımınıza koşar.</p>
+<h2 id=refcell-t-akıllı-i̇şaretçisi><a href=https://doc.rust-lang.org/std/cell/index.html>RefCell&lt;T></a> Akıllı İşaretçisi<a href=#refcell-t-akıllı-i̇şaretçisi class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<p>RefCell&rsquo;i anlatmadan önce biraz Interior mutability nedir diye bahsetmek gerekiyor. Interior mutability, mutable bir referansınız olmayan bir veriyi değiştirmeye izin veren bir tasarım desenidir normalde bu işlem Rust&rsquo;ın kurallarına aykırıdır ama Cell&lt;T> ve RefCell&lt;T> tipleri sayesinde bunu yapabiliyoruz.</p>
+<p>RefCell kullanırken dikkat etmeniz gereken şey borrowing kurallarının derleme zamanında değil de çalışma zamanında yakalandığını unutmamaktır bu hataları fark etmeyi zorlaştırabilir bu yüzden gerçekten ihtiyacınız olmadığında RefCell yerine Cell kullanmak daha mantıklıdır.
+Aşağıdaki örnek programa bakalım:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>let</span> x <span style=color:#f92672>=</span> <span style=color:#ae81ff>5</span>;
+    <span style=color:#66d9ef>let</span> y <span style=color:#f92672>=</span> <span style=color:#f92672>&amp;</span><span style=color:#66d9ef>mut</span> x;
+}
+</code></pre></div><p>mutable olarak belirlenmeyen bir değişkene mutable bir referans almaya çalıştığımızı anlayan derleyici kodu reddetti peki şunu deneyelim:</p>
+<div class=highlight><pre tabindex=0 style=color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4><code class=language-rust data-lang=rust><span style=color:#66d9ef>use</span> std::cell::RefCell;
+<span style=color:#66d9ef>fn</span> <span style=color:#a6e22e>main</span>() {
+    <span style=color:#66d9ef>let</span> x <span style=color:#f92672>=</span> RefCell::new(<span style=color:#ae81ff>5</span>);
+    <span style=color:#66d9ef>let</span> <span style=color:#66d9ef>mut</span> y <span style=color:#f92672>=</span> x.borrow_mut();
+    println!(<span style=color:#e6db74>&#34;değiştirmeden önce x&#39;in değeri = {}&#34;</span>,<span style=color:#f92672>*</span>y);
+    <span style=color:#f92672>*</span>y <span style=color:#f92672>=</span> <span style=color:#ae81ff>10</span>;
+    println!(<span style=color:#e6db74>&#34;değiştirdikten sonra x&#39;in değeri = {}&#34;</span>,<span style=color:#f92672>*</span>y);
+}
+</code></pre></div><p>çalıştı değil mi? işte interior mutability budur. Bu deseni örneğin sizi &self almaya zorlayan traitlerde selfi RefCell olarak tanımlayarak kullanabilirsiniz.</p>
+<h2 id=kaynaklar>Kaynaklar<a href=#kaynaklar class=hanchor arialabel=Anchor>&#8983;</a> </h2>
+<ul>
+<li><a href=https://doc.rust-lang.org/book/ch15-00-smart-pointers.html>https://doc.rust-lang.org/book/ch15-00-smart-pointers.html</a></li>
+</ul>
+</div></div>
+</div>
+</div>
+<footer class=footer>
+<div class=footer__inner>
+<div class=copyright>
+<span>© 2022 Powered by <a href=http://gohugo.io>Hugo</a></span>
+<span>:: Theme made by <a href=https://twitter.com/panr>panr</a></span>
+</div>
+</div>
+</footer>
+<script src=/assets/main.js></script>
+<script src=/assets/prism.js></script>
+</div>
+</body>
+</html>
