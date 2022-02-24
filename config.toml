@@ -26,7 +26,7 @@ theme = "hugo-coder"
   name = "Twitter"
   icon = "fa fa-twitter fa-2x"
   weight = 3
-  url = "https://twitter.com/dogubbutgopher/"
+  url = "https://twitter.com/dogubutgopher/"
 [[params.social]]
   name = "Telegram"
   icon = "fa fa-telegram fa-2x"
