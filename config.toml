@@ -37,7 +37,7 @@ theme = "hugo-coder"
   name = "RSS"
   icon = "fa fa-2x fa-rss"
   weight = 6
-  url = "index.xml/"
+  url = "index.xml"
   rel = "alternate"
   type = "application/rss+xml"
 
