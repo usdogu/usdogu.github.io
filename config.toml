@@ -28,6 +28,11 @@ theme = "hugo-coder"
   weight = 3
   url = "https://twitter.com/dogubutgopher/"
 [[params.social]]
+  name = "Mastodon"
+  icon = "fa fa-mastodon fa-2x"
+  weight = 3
+  url = "https://fosstodon.org/@usdogu"
+[[params.social]]
   name = "Telegram"
   icon = "fa fa-telegram fa-2x"
   weight = 3
