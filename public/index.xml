@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>My Blog</title>
+    <link>https://usdogu.github.io/</link>
+    <description>Recent content on My Blog</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <managingEditor>uspro@disroot.org (Doğu Us)</managingEditor>
+    <webMaster>uspro@disroot.org (Doğu Us)</webMaster>
+    <lastBuildDate>Wed, 16 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://usdogu.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Rust Akıllı İşaretçiler</title>
+      <link>https://usdogu.github.io/posts/rust-ak%C4%B1ll%C4%B1-i%C5%9Faret%C3%A7iler/</link>
+      <pubDate>Wed, 16 Feb 2022 00:00:00 +0000</pubDate>
+      <author>uspro@disroot.org (Doğu Us)</author>
+      <guid>https://usdogu.github.io/posts/rust-ak%C4%B1ll%C4%B1-i%C5%9Faret%C3%A7iler/</guid>
+      <description>Akıllı İşaretçiler (Smart Pointers) Nedir    Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak String tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.
+Box&amp;lt;T&amp;gt; Akıllı İşaretçisi    Verileri stack yerine heap üzerinde tutar. Aslında bu tipin çok da artıları yoktur</description>
+    </item>
+    
+  </channel>
+</rss>
