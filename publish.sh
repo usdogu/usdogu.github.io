@@ -3,4 +3,4 @@ hugo
 cd public
 git add -A
 git commit -m $argv
-git push origin main
+git push origin HEAD:main
