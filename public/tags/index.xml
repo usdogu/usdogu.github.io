@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Tags on My Blog</title>
+    <title>Tags on Doğu Us&#39; Blog</title>
     <link>https://usdogu.github.io/tags/</link>
-    <description>Recent content in Tags on My Blog</description>
+    <description>Recent content in Tags on Doğu Us&#39; Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <managingEditor>uspro@disroot.org (Doğu Us)</managingEditor>
@@ -16,6 +16,7 @@
       <author>uspro@disroot.org (Doğu Us)</author>
       <guid>https://usdogu.github.io/tags/rust/</guid>
       <description></description>
+      <content></content>
     </item>
     
     <item>
@@ -25,6 +26,7 @@
       <author>uspro@disroot.org (Doğu Us)</author>
       <guid>https://usdogu.github.io/tags/turkish/</guid>
       <description></description>
+      <content></content>
     </item>
     
   </channel>

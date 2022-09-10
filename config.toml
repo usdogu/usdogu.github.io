@@ -1,55 +1,35 @@
 baseURL = 'https://usdogu.github.io'
 languageCode = 'en-us'
 title = 'My Blog'
-theme = "hugo-coder"
+theme = "terminal"
 
 [author]
   name = "Doğu Us"
   email = "uspro@disroot.org"
 
-[markup.goldmark.renderer]
-  unsafe = true
-
 [params]
   author = "Doğu Us"
-  info = "Tech Addict"
-  description = "Doğu Us' personal website"
-  keywords = "blog"
-  colorScheme = "dark"
+  title = "Doğu Us' Blog"
+  themeColor = "red"
+  centerTheme = true
+  readingTime = true
+  Toc = true
 
-[[params.social]]
-  name = "Github"
-  icon = "fa fa-github fa-2x"
-  weight = 1
-  url = "https://github.com/usdogu/"
-[[params.social]]
-  name = "Twitter"
-  icon = "fa fa-twitter fa-2x"
-  weight = 3
-  url = "https://twitter.com/dogubutgopher/"
-[[params.social]]
-  name = "Mastodon"
-  icon = "fa fa-mastodon fa-2x"
-  weight = 3
-  url = "https://fosstodon.org/@usdogu"
-[[params.social]]
-  name = "Telegram"
-  icon = "fa fa-telegram fa-2x"
-  weight = 3
-  url = "https://t.me/c25dbb82028af8907c3a402fa0c2780d"
+[languages]
+  [languages.en]
+    title = "Doğu Us' Blog"
+    owner = "Doğu Us"
+    keywords = "blog, technology, programming"
+    [languages.en.params.logo]
+      logoText = "USPRO"
+      logoHomeLink = "/"
+    [languages.en.menu]
+      [[languages.en.menu.main]]
+        identifier = "about"
+        name = "About"
+        url = "/about"
+      [[languages.en.menu.main]]
+        identifier = "rss"
+        name = "RSS"
+        url = "/index.xml"
 
-[[params.social]]
-  name = "RSS"
-  icon = "fa fa-2x fa-rss"
-  weight = 6
-  url = "index.xml"
-  rel = "alternate"
-  type = "application/rss+xml"
-
-[params.goatCounter]
-  code = "usdogu"
-
-[[menu.main]]
-  name = "Blog"
-  weight = 1
-  url = "posts/"

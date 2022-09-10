@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>turkish on My Blog</title>
+    <title>turkish on Doğu Us&#39; Blog</title>
     <link>https://usdogu.github.io/tags/turkish/</link>
-    <description>Recent content in turkish on My Blog</description>
+    <description>Recent content in turkish on Doğu Us&#39; Blog</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <managingEditor>uspro@disroot.org (Doğu Us)</managingEditor>
@@ -15,8 +15,64 @@
       <pubDate>Wed, 16 Feb 2022 00:00:00 +0000</pubDate>
       <author>uspro@disroot.org (Doğu Us)</author>
       <guid>https://usdogu.github.io/posts/rust-ak%C4%B1ll%C4%B1-i%C5%9Faret%C3%A7iler/</guid>
-      <description>Akıllı İşaretçiler (Smart Pointers) Nedir    Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak String tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.
-Box&amp;lt;T&amp;gt; Akıllı İşaretçisi    Verileri stack yerine heap üzerinde tutar. Aslında bu tipin çok da artıları yoktur</description>
+      <description>Akıllı İşaretçiler (Smart Pointers) Nedir Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak String tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.
+Box&amp;lt;T&amp;gt; Akıllı İşaretçisi Verileri stack yerine heap üzerinde tutar. Aslında bu tipin çok da artıları yoktur
+Tutmak istediğiniz verinin boyutunun derleme anında bilinmediği durumlarda Kopyalamak istemediğiniz büyük miktarda verinin sahipliğini değiştirmek istediğiniz durumlarda kullanılabilir.</description>
+      <content>&lt;h2 id=&#34;akıllı-i̇şaretçiler--smart-pointers--nedir&#34;&gt;Akıllı İşaretçiler (Smart Pointers) Nedir&lt;/h2&gt;
+&lt;p&gt;Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak
+&lt;a href=&#34;https://doc.rust-lang.org/std/string/struct.String.html&#34;&gt;String&lt;/a&gt; tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.&lt;/p&gt;
+&lt;h2 id=&#34;box-t-akıllı-i̇şaretçisi&#34;&gt;&lt;a href=&#34;https://doc.rust-lang.org/std/boxed/index.html&#34;&gt;Box&amp;lt;T&amp;gt;&lt;/a&gt; Akıllı İşaretçisi&lt;/h2&gt;
+&lt;p&gt;Verileri stack yerine &lt;a href=&#34;https://scribe.rip/yigit-xcodeproj/stack-ve-heap-arasindaki-fark-nedir-stack-vs-heap-c61e3d463dd7&#34;&gt;heap&lt;/a&gt; üzerinde tutar. Aslında bu tipin çok da artıları yoktur&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Tutmak istediğiniz verinin boyutunun derleme anında bilinmediği durumlarda&lt;/li&gt;
+&lt;li&gt;Kopyalamak istemediğiniz büyük miktarda verinin sahipliğini değiştirmek istediğiniz durumlarda kullanılabilir.&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Kullanımı:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; b &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Box::new(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    println!(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;b = {}&amp;#34;&lt;/span&gt;, b);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;şeklindedir. Eğer C/C++ bilginiz varsa heap üzerinde tuttuğumuz veriyi free tarzı bir yapı kullanarak neden deallocate etmediğimizi sorabilirsiniz, bunun sebebi Rust&amp;rsquo;ın değişken kapsam dışına çıktığında hem heap üzerindeki veriyi hem de stack üzerindeki heap&amp;rsquo;teki verinin adresini tutan pointerı otomatik olarak silmesidir.&lt;/p&gt;
+&lt;h2 id=&#34;rc-t-akıllı-i̇şaretçisi&#34;&gt;&lt;a href=&#34;https://doc.rust-lang.org/std/rc/index.html&#34;&gt;Rc&amp;lt;T&amp;gt;&lt;/a&gt; Akıllı İşaretçisi&lt;/h2&gt;
+&lt;p&gt;Bir verinin birden fazla sahibi olduğu durumlarda kullanılır tutulan veri her klonlandığında referans sayısı bir artar ve tüm referanslar yok olduğunda tutulan veri silinir. Rc&amp;lt;T&amp;gt; tipini aile odasındaki bir TV olarak hayal edin, biri içeri girip TV izlemek istediğinde televizyonu açar ve diğerleri de odaya gelip televizyon izleyebilir ama son kişi de odadan çıkıcağında televizyonu kapatır çünkü artık kullanımda değildir değil mi? işte Rc&amp;lt;T&amp;gt; tipi de tam olarak bunu yapar.&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; std::rc::Rc;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; a &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Rc::new(&lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    println!(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;a&amp;#39;nın başlangıçtaki referans sayısı = {}&amp;#34;&lt;/span&gt;, Rc::strong_count(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;a));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; _b &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Rc::clone(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;a);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    println!(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;b&amp;#39;den sonra referans sayısı = {}&amp;#34;&lt;/span&gt;, Rc::strong_count(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;a));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; _c &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; Rc::clone(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;a);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        println!(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;c&amp;#39;den sonra referans sayısı = {}&amp;#34;&lt;/span&gt;, Rc::strong_count(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;a));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    }
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    println!(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;c kapsam dışına çıktıktan sonra referans sayısı = {}&amp;#34;&lt;/span&gt;, Rc::strong_count(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;a));
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Kendi bilgisayarınızda bu örnek kodu deneyerek Rc&amp;rsquo;nin nasıl işlediğini daha iyi anlayabilirsiniz.&lt;/p&gt;
+&lt;p&gt;Not: Rc&amp;lt;T&amp;gt; tipini sadece tek threadlı uygulamalarda kullanabilirsiniz diğerleri için &lt;a href=&#34;https://doc.rust-lang.org/std/sync/struct.Arc.html&#34;&gt;Arc&lt;/a&gt; yardımınıza koşar.&lt;/p&gt;
+&lt;h2 id=&#34;refcell-t-akıllı-i̇şaretçisi&#34;&gt;&lt;a href=&#34;https://doc.rust-lang.org/std/cell/index.html&#34;&gt;RefCell&amp;lt;T&amp;gt;&lt;/a&gt; Akıllı İşaretçisi&lt;/h2&gt;
+&lt;p&gt;RefCell&amp;rsquo;i anlatmadan önce biraz Interior mutability nedir diye bahsetmek gerekiyor. Interior mutability, mutable bir referansınız olmayan bir veriyi değiştirmeye izin veren bir tasarım desenidir normalde bu işlem Rust&amp;rsquo;ın kurallarına aykırıdır ama Cell&amp;lt;T&amp;gt; ve RefCell&amp;lt;T&amp;gt; tipleri sayesinde bunu yapabiliyoruz.&lt;/p&gt;
+&lt;p&gt;RefCell kullanırken dikkat etmeniz gereken şey borrowing kurallarının derleme zamanında değil de çalışma zamanında yakalandığını unutmamaktır bu hataları fark etmeyi zorlaştırabilir bu yüzden gerçekten ihtiyacınız olmadığında RefCell yerine Cell kullanmak daha mantıklıdır.
+Aşağıdaki örnek programa bakalım:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; x;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;mutable olarak belirlenmeyen bir değişkene mutable bir referans almaya çalıştığımızı anlayan derleyici kodu reddetti peki şunu deneyelim:&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; std::cell::RefCell;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; x &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; RefCell::new(&lt;span style=&#34;color:#ae81ff&#34;&gt;5&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; x.borrow_mut();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    println!(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;değiştirmeden önce x&amp;#39;in değeri = {}&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;y);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;y &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;10&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    println!(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;değiştirdikten sonra x&amp;#39;in değeri = {}&amp;#34;&lt;/span&gt;,&lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;y);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;çalıştı değil mi? işte interior mutability budur. Bu deseni örneğin sizi &amp;amp;self almaya zorlayan traitlerde selfi RefCell olarak tanımlayarak kullanabilirsiniz.&lt;/p&gt;
+&lt;h2 id=&#34;kaynaklar&#34;&gt;Kaynaklar&lt;/h2&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;a href=&#34;https://doc.rust-lang.org/book/ch15-00-smart-pointers.html&#34;&gt;https://doc.rust-lang.org/book/ch15-00-smart-pointers.html&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;
+</content>
     </item>
     
   </channel>
