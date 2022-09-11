@@ -1,6 +1,5 @@
-baseURL = 'https://usdogu.github.io'
+baseurl = 'https://usdogu.github.io/'
 languageCode = 'en-us'
-title = 'My Blog'
 theme = "terminal"
 
 [author]
@@ -33,3 +32,4 @@ theme = "terminal"
         name = "RSS"
         url = "/index.xml"
 
+disqusShortname = "dogublog"
