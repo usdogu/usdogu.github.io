@@ -1,7 +1,7 @@
 +++
 title = "Keygen Analizi - Bölüm 1"
 author = "Doğu Us"
-description = "Bir keygeni IDA Pro ve x64dbg ile analiz edip Rust ile baştan yazıyoruz"
+description = "Bir keygeni IDA Pro ve x64dbg ile analiz edip Rust ile baştan yazıyoruz - Bölüm 1"
 date = "2022-09-11"
 tags = ["reversing", "turkish"]
 draft = false
@@ -97,6 +97,17 @@ Sonunda lisans üretimine gelebildik çok da fantazili bişeyler yokmuş hayal k
 
 Burada ValueName kayıt defterinde isim Data ise onun değeri olarak kullanılarak kayıt defterine yazılıyor
 
+
+## Sondaki Küçük Kod Parçacığı
+```c
+v6 = __rdtsc();
+srand(HIDWORD(v6) ^ v6);
+```
+Bunun sayesinde iki satırda iki farklı şey öğrendim;
+- __rdtsc fonksiyonu Windows makinelerde rtdsc assembly komutununu üretmeye yarıyormuş bu ise son yeniden başlatmadan sonra geçen işlemci döngü sayısını veriyormuş
+- HIDWORD makrosu bir DWORD'ün son 2 baytını getirmeye yarıyormuş
+
+Yani bu kod parçası rastgele olma olasılığı çok yüksek olan bir değeri alıp bu değeri son 2 baytı ile XOR işlemine sokup gelen veriyi rastgele sayı üreticiye "seed" olarak kullanıyor. time(NULL) kullanan eziklere duyurulur :D
 
 ## Çıkış
 Şimdilik bu kadar bölüm ikide burdan öğrendiklerimizi kullanarak Rust ile baştan keygen yazmaya çalışıcaz
