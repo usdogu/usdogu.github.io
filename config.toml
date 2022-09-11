@@ -29,6 +29,10 @@ disqusShortname = "dogublog"
         name = "About"
         url = "/about"
       [[languages.en.menu.main]]
+        identifier = "analytics"
+        name = "Analytics"
+        url = "https://usdogu.goatcounter.com/"
+      [[languages.en.menu.main]]
         identifier = "rss"
         name = "RSS"
         url = "/index.xml"
