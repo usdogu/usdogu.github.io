@@ -17,7 +17,7 @@
       <guid>https://usdogu.github.io/posts/rust-ak%C4%B1ll%C4%B1-i%C5%9Faret%C3%A7iler/</guid>
       <description>Akıllı İşaretçiler (Smart Pointers) Nedir Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak String tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.
 Box&amp;lt;T&amp;gt; Akıllı İşaretçisi Verileri stack yerine heap üzerinde tutar. Aslında bu tipin çok da artıları yoktur
-Tutmak istediğiniz verinin boyutunun derleme anında bilinmediği durumlarda Kopyalamak istemediğiniz büyük miktarda verinin sahipliğini değiştirmek istediğiniz durumlarda kullanılabilir.</description>
+ Tutmak istediğiniz verinin boyutunun derleme anında bilinmediği durumlarda Kopyalamak istemediğiniz büyük miktarda verinin sahipliğini değiştirmek istediğiniz durumlarda kullanılabilir.</description>
       <content>&lt;h2 id=&#34;akıllı-i̇şaretçiler--smart-pointers--nedir&#34;&gt;Akıllı İşaretçiler (Smart Pointers) Nedir&lt;/h2&gt;
 &lt;p&gt;Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak
 &lt;a href=&#34;https://doc.rust-lang.org/std/string/struct.String.html&#34;&gt;String&lt;/a&gt; tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.&lt;/p&gt;

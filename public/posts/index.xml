@@ -8,7 +8,208 @@
     <language>en-us</language>
     <managingEditor>uspro@disroot.org (Doğu Us)</managingEditor>
     <webMaster>uspro@disroot.org (Doğu Us)</webMaster>
-    <lastBuildDate>Wed, 16 Feb 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://usdogu.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Sun, 11 Sep 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://usdogu.github.io/posts/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Keygen Analizi - Bölüm 1</title>
+      <link>https://usdogu.github.io/posts/keygen-analiz-1/</link>
+      <pubDate>Sun, 11 Sep 2022 00:00:00 +0000</pubDate>
+      <author>uspro@disroot.org (Doğu Us)</author>
+      <guid>https://usdogu.github.io/posts/keygen-analiz-1/</guid>
+      <description>Giriş Http Debugger Pro kullanırken yenik düştüğüm merakım yüzünden bu gönderiyi yazıyorum
+kendileri yaparak takip etmek isteyenler için:
+Dosya: https://cloud.disroot.org/s/w33G9eCFne9NibH
+VT: https://www.virustotal.com/gui/file/2234957b4842355a4c3d1295dd9d89c9cb0949a15ad41ddee30cf93c62c8b0e2
+İlk Bakış Dosyayı IDA&amp;rsquo;ya atıp start fonksiyonunu decompile edelim bakalım neler dönüyor.. Diğerlerini bilmem ama sub_401000 kesinlikle kayıt defteri ile alakalı bişeyler yapıyor daha detaylı inceleyelim
+sub_401000 Tam da düşündüğüm gibi ilk verilen argümanı &amp;ldquo;subkey&amp;rdquo; ikinciyi değer adı olarak kullanarak uygulama versiyonunu üçüncü argümana yazıyor. Benim bu gönderiyi yazarken kullandığım sürümde yazan değer &amp;ldquo;HTTP Debugger 9.</description>
+      <content>&lt;h2 id=&#34;giriş&#34;&gt;Giriş&lt;/h2&gt;
+&lt;p&gt;Http Debugger Pro kullanırken yenik düştüğüm merakım yüzünden bu gönderiyi yazıyorum&lt;/p&gt;
+&lt;p&gt;kendileri yaparak takip etmek isteyenler için:&lt;/p&gt;
+&lt;p&gt;Dosya: &lt;a href=&#34;https://cloud.disroot.org/s/w33G9eCFne9NibH&#34;&gt;https://cloud.disroot.org/s/w33G9eCFne9NibH&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;VT: &lt;a href=&#34;https://www.virustotal.com/gui/file/2234957b4842355a4c3d1295dd9d89c9cb0949a15ad41ddee30cf93c62c8b0e2&#34;&gt;https://www.virustotal.com/gui/file/2234957b4842355a4c3d1295dd9d89c9cb0949a15ad41ddee30cf93c62c8b0e2&lt;/a&gt;&lt;/p&gt;
+&lt;h2 id=&#34;ilk-bakış&#34;&gt;İlk Bakış&lt;/h2&gt;
+&lt;p&gt;Dosyayı IDA&amp;rsquo;ya atıp start fonksiyonunu decompile edelim bakalım neler dönüyor..
+&lt;img src=&#34;images/ida_ilk_bakis.JPG&#34; alt=&#34;IDA ilk bakış&#34;&gt;
+Diğerlerini bilmem ama sub_401000 kesinlikle kayıt defteri ile alakalı bişeyler yapıyor daha detaylı inceleyelim&lt;/p&gt;
+&lt;h2 id=&#34;sub_401000&#34;&gt;sub_401000&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;images/sub_401000.JPG&#34; alt=&#34;kayıt defteri okuyucu&#34;&gt;
+Tam da düşündüğüm gibi ilk verilen argümanı &amp;ldquo;subkey&amp;rdquo; ikinciyi değer adı olarak kullanarak uygulama versiyonunu üçüncü argümana yazıyor. Benim bu gönderiyi yazarken kullandığım sürümde yazan değer &amp;ldquo;HTTP Debugger 9.0.0.12&amp;rdquo; şeklinde, bakalım bu veri nasıl kullanılıcak. Fonksiyonu get_app_version, üçüncü argümanı app_version olarak yeniden adlandırıp devam ediyorum&lt;/p&gt;
+&lt;h2 id=&#34;sub_4013d0&#34;&gt;sub_4013D0&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;images/sub_4013D0.JPG&#34; alt=&#34;sub_4013D0&#34;&gt;
+Bu arkadaşımız bir sonraki çağrılan fonksiyon, uygulama versiyonunu ise argüman olarak alıyor. Buna bir süre boş boş baktıktan sonra bunu (şimdilik) statik olarak anlamaya çalışıcak kadar ruh hastası olmadığıma karar verdim x64dbg üzerinden devam ediyoruz :D&lt;/p&gt;
+&lt;h2 id=&#34;sub_4013d0-dinamik-analiz&#34;&gt;sub_4013D0 Dinamik Analiz&lt;/h2&gt;
+&lt;p&gt;
+ 
+&lt;video width=100% controls&gt;
+    &lt;source src=&#34;images/sub_4013D0.mp4&#34; type=&#34;video/mp4&#34;&gt;
+    Your browser does not support the video tag.  
+&lt;/video&gt;
+
+Burdan anladığım kadarıyla uygulama versiyonunun son 2 sayısını döndürüyor ama içimde bişey kaçırıyormuşum gibi bir his var yine de devam edelim&lt;/p&gt;
+&lt;h2 id=&#34;while-döngüsü&#34;&gt;While döngüsü&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;while&lt;/span&gt; ( &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;v4 &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;32&lt;/span&gt; )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;{
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;if&lt;/span&gt; ( &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;v4 &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;46&lt;/span&gt; )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;      String[v5&lt;span style=&#34;color:#f92672&#34;&gt;++&lt;/span&gt;] &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;*&lt;/span&gt;v4;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#f92672&#34;&gt;--&lt;/span&gt;v4;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;şeklinde bi döngümüz var, sıçtık galiba&amp;hellip; Bir önceki fonksiyonun char* döndürdüğünü gördüğümde IDA yanlış decompile etmiştir diyip geçmiştim ama harbiden yazı döndürüyor gibi 32 ve 46 ASCII&amp;rsquo;de  sırasıyla boşluğa ve nokta karakterine denk geliyor yani bi önceki fonksiyonun son 2 sayıyı değil &amp;ldquo;HTTP Debugger&amp;rdquo; kısmını silip sadece 9.0.0.12 döndürüyor olması çok kuvvetli ihtimal. Fonksiyonun 9.0.0.12 döndürdüğünü varsayıp devam edelim. Bu kod parçası nokta karakteri olmayan her karakteri String isimli bir değişkene koyuyor ve sonuç olarak 9.0.0.12 değeri 90012 oluyor, Bu değişkeni version_cleaned olarak yeniden adlandırıp devam ediyorum&lt;/p&gt;
+&lt;p&gt;Sonradan gelen not: Bu kod yanlış decompile edilmiş ++v4 olması gerekiyor assembly&amp;rsquo;e göre.&lt;/p&gt;
+&lt;p&gt;Okuyucuya not: Kafanızı monitöre vurmadan önce decompilerlara güvenilmemesi gerektiğini öğrenin.&lt;/p&gt;
+&lt;h2 id=&#34;sub_401420&#34;&gt;sub_401420&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;images/sub_401420.JPG&#34; alt=&#34;sub_401420&#34;&gt;
+Hiçbir şey dememe gerek yok x64dbg üzerinden devam ediyoruz :D&lt;/p&gt;
+&lt;h2 id=&#34;sub_401420-dinamik-analiz&#34;&gt;sub_401420 Dinamik Analiz&lt;/h2&gt;
+&lt;p&gt;
+ 
+&lt;video width=100% controls&gt;
+    &lt;source src=&#34;images/sub_401420.mp4&#34; type=&#34;video/mp4&#34;&gt;
+    Your browser does not support the video tag.  
+&lt;/video&gt;
+
+Bu kanser şeyin sırf benim gibilere vakit kaybettirmek için konulduğuna %99,99 eminim noktasız versiyon değeri geri dönüyor, devaaam&lt;/p&gt;
+&lt;h2 id=&#34;sub_401390&#34;&gt;sub_401390&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;images/sub_401390.JPG&#34; alt=&#34;sub_401390&#34;&gt;
+Yine zamanım çalınıcak gibi hissediyorum ama x64dbg geçtik yine&lt;/p&gt;
+&lt;h2 id=&#34;sub_401390-dinamik-analiz&#34;&gt;sub_401390 Dinamik Analiz&lt;/h2&gt;
+&lt;p&gt;
+ 
+&lt;video width=100% controls&gt;
+    &lt;source src=&#34;images/sub_401390.mp4&#34; type=&#34;video/mp4&#34;&gt;
+    Your browser does not support the video tag.  
+&lt;/video&gt;
+
+Ömrümü yediğim şeye bak amk yine versiyon döndürdü neyse devam ediyoruz&lt;/p&gt;
+&lt;h2 id=&#34;sub_40123e&#34;&gt;sub_40123E&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;images/sub_40123E.JPG&#34; alt=&#34;sub_40123E&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Bak bu ilginçmiş işte C diskinin seri numarasını çekip SN ile başlayan bir yazıya seri numarası ve uygulama versiyonunu içeren bir dizi bit işlemine sokuyor ve değer ValuName isimli değişkene atanıyor. Bu kısım büyük ihtimal direkt Http Debugger analiz edilerek bulundu, bizi sinir krizine girmek zorunda bırakmadıkları için teşekkür ediyor ve devam ediyoruz&lt;/p&gt;
+&lt;h2 id=&#34;sub_4011c1&#34;&gt;sub_4011C1&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;images/sub_4011C1.JPG&#34; alt=&#34;sub_4011C1&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Sonunda lisans üretimine gelebildik çok da fantazili bişeyler yokmuş hayal kırıklığına uğramadım desem yalan olur :D&lt;/p&gt;
+&lt;p&gt;3 adet 0 ile 254 arası sayı üretiliyor ve değişik bit işlemlerinin değerleri hex olarak Data isimli değişkene atanıyor&lt;/p&gt;
+&lt;h2 id=&#34;sub_4012d4&#34;&gt;sub_4012D4&lt;/h2&gt;
+&lt;p&gt;&lt;img src=&#34;images/sub_4012D4.JPG&#34; alt=&#34;sub_4012D4&#34;&gt;&lt;/p&gt;
+&lt;p&gt;Burada ValueName kayıt defterinde isim Data ise onun değeri olarak kullanılarak kayıt defterine yazılıyor&lt;/p&gt;
+&lt;h2 id=&#34;sondaki-küçük-kod-parçacığı&#34;&gt;Sondaki Küçük Kod Parçacığı&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-c&#34; data-lang=&#34;c&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;v6 &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; __rdtsc();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;srand(HIDWORD(v6) &lt;span style=&#34;color:#f92672&#34;&gt;^&lt;/span&gt; v6);
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Bunun sayesinde iki satırda iki farklı şey öğrendim;&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;__rdtsc fonksiyonu Windows makinelerde rtdsc assembly komutununu üretmeye yarıyormuş bu ise son yeniden başlatmadan sonra geçen işlemci döngü sayısını veriyormuş&lt;/li&gt;
+&lt;li&gt;HIDWORD makrosu bir DWORD&amp;rsquo;ün son 2 baytını getirmeye yarıyormuş&lt;/li&gt;
+&lt;/ul&gt;
+&lt;p&gt;Yani bu kod parçası rastgele olma olasılığı çok yüksek olan bir değeri alıp bu değeri son 2 baytı ile XOR işlemine sokup gelen veriyi rastgele sayı üreticiye &amp;ldquo;seed&amp;rdquo; olarak kullanıyor. time(NULL) kullanan eziklere duyurulur :D&lt;/p&gt;
+&lt;h2 id=&#34;çıkış&#34;&gt;Çıkış&lt;/h2&gt;
+&lt;p&gt;Şimdilik bu kadar bölüm ikide burdan öğrendiklerimizi kullanarak Rust ile baştan keygen yazmaya çalışıcaz&lt;/p&gt;
+&lt;p&gt;Bu arada temizlenilmiş IDB dosyası için: &lt;a href=&#34;https://cloud.disroot.org/s/cMR8J3FTzaxqcMJ&#34;&gt;https://cloud.disroot.org/s/cMR8J3FTzaxqcMJ&lt;/a&gt;&lt;/p&gt;
+</content>
+    </item>
+    
+    <item>
+      <title>Keygen Analizi - Bölüm 2</title>
+      <link>https://usdogu.github.io/posts/keygen-analiz-2/</link>
+      <pubDate>Sun, 11 Sep 2022 00:00:00 +0000</pubDate>
+      <author>uspro@disroot.org (Doğu Us)</author>
+      <guid>https://usdogu.github.io/posts/keygen-analiz-2/</guid>
+      <description>Giriş Lütfen önceki bölümü okumadan bu bölüme geçmeyiniz. Sadece keygeni istiyorsanız: https://codeberg.org/usdogu/httpdebuggerpro-keygen
+Bu bölümde önceki bölümde edindiğimiz bilgileri kullanarak keygeni Rust ile baştan yazmaya çalışıcaz. Projeyi açmak ve bağımlılıkları eklemek için;
+cargo new httpdebugger_keygen cargo add winreg # kayıt defteri ile işlem yapabilmek için cargo add winsafe # C diskinin seri numarasını almamızı sağlayan Windows fonksiyonuna erişmek için cargo add rand # Rastgele sayı üretmek için Koda Dalış Öncelikle bağımlılıkları kullanalım;</description>
+      <content>&lt;h2 id=&#34;giriş&#34;&gt;Giriş&lt;/h2&gt;
+&lt;p&gt;Lütfen &lt;a href=&#34;https://usdogu.github.io/posts/keygen-analiz-1/&#34;&gt;önceki&lt;/a&gt; bölümü okumadan bu bölüme geçmeyiniz.
+Sadece keygeni istiyorsanız: &lt;a href=&#34;https://codeberg.org/usdogu/httpdebuggerpro-keygen&#34;&gt;https://codeberg.org/usdogu/httpdebuggerpro-keygen&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;Bu bölümde önceki bölümde edindiğimiz bilgileri kullanarak keygeni Rust ile baştan yazmaya çalışıcaz.
+Projeyi açmak ve bağımlılıkları eklemek için;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-sh&#34; data-lang=&#34;sh&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cargo new httpdebugger_keygen
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cargo add winreg &lt;span style=&#34;color:#75715e&#34;&gt;# kayıt defteri ile işlem yapabilmek için&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cargo add winsafe &lt;span style=&#34;color:#75715e&#34;&gt;# C diskinin seri numarasını almamızı sağlayan Windows fonksiyonuna erişmek için&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;cargo add rand &lt;span style=&#34;color:#75715e&#34;&gt;# Rastgele sayı üretmek için&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;koda-dalış&#34;&gt;Koda Dalış&lt;/h2&gt;
+&lt;p&gt;Öncelikle bağımlılıkları kullanalım;&lt;/p&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; rand::{thread_rng, Rng};
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; winreg::RegKey;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;use&lt;/span&gt; winsafe::GetVolumeInformation;
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;http-debugger-versiyonunu-çekme&#34;&gt;Http Debugger Versiyonunu Çekme&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;get_httpdebugger_version&lt;/span&gt;() -&amp;gt; Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;u32&lt;/span&gt;, Box&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;dyn&lt;/span&gt; std::error::Error&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; hkcu &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; RegKey::predef(winreg::enums::HKEY_CURRENT_USER);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; (regkey, _) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; hkcu.create_subkey(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Software\\MadeForNet\\HTTPDebuggerPro&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; version_full: String &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; regkey.get_value(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;AppVer&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; version &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; version_full
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .split_whitespace()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .last()
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .expect(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;There&amp;#39;s an error while reading the Http Debugger version&amp;#34;&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        .to_string();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    version.retain(&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt;c&lt;span style=&#34;color:#f92672&#34;&gt;|&lt;/span&gt; c &lt;span style=&#34;color:#f92672&#34;&gt;!=&lt;/span&gt; &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#39;.&amp;#39;&lt;/span&gt;); &lt;span style=&#34;color:#75715e&#34;&gt;// remove dots from the version number
+&lt;/span&gt;&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#75715e&#34;&gt;&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Ok(version.parse()&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Burada çok da bi olay yok aslında öncelikle HKEY_CURRENT_USER altındaki Software\MadeForNet\HTTPDebuggerPro &amp;ldquo;subkey&amp;quot;inin içindeki AppVer değerini alıyor daha sonra ise boşluk ile ayırıp son değeri alıyor sonra ise buradan son değeri alıyor yani&lt;/p&gt;
+&lt;p&gt;&amp;ldquo;HTTP Debugger 9.0.0.12&amp;rdquo; -&amp;gt; [&amp;ldquo;HTTP&amp;rdquo;, &amp;ldquo;Debugger&amp;rdquo;, &amp;ldquo;9.0.0.12&amp;rdquo;] -&amp;gt; &amp;ldquo;9.0.0.12&amp;rdquo; oluyor.
+Bir sonraki satırda ise nokta karakteri olmayan karakterleri tutup noktaları siliyor &amp;ldquo;9.0.0.12&amp;rdquo; değeri &amp;ldquo;90012&amp;rdquo; oluyor.&lt;/p&gt;
+&lt;h2 id=&#34;kayıt-defteri-ismini-üretme&#34;&gt;Kayıt Defteri İsmini Üretme&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_registry_key_name&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    httpdebugger_version: &lt;span style=&#34;color:#66d9ef&#34;&gt;u32&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) -&amp;gt; Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;String, Box&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;dyn&lt;/span&gt; std::error::Error&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; serial_number &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;u32&lt;/span&gt;::default();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    GetVolumeInformation(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Some(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;C:\\&amp;#34;&lt;/span&gt;),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        None,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        Some(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; serial_number),
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        None,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        None,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        None,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    )&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; result &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; format!(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;SN{}&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        httpdebugger_version &lt;span style=&#34;color:#f92672&#34;&gt;^&lt;/span&gt; ((&lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;serial_number &lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;1&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;+&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;736&lt;/span&gt;) &lt;span style=&#34;color:#f92672&#34;&gt;^&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0x590D4&lt;/span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    );
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Ok(result)
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Burada ise GetVolumeInformation kullanarak C diskinin seri numarasını serial_number değişkenine yazıyoruz daha sonra ise orijinal versiyondaki bit işlemlerini aynen uygulayıp gelen değeri döndürüyoruz.&lt;/p&gt;
+&lt;h2 id=&#34;lisans-üretme&#34;&gt;Lisans Üretme&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;create_license_key&lt;/span&gt;() -&amp;gt; String {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;mut&lt;/span&gt; rng &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; thread_rng();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; rand1: &lt;span style=&#34;color:#66d9ef&#34;&gt;u8&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; rng.gen();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; rand2: &lt;span style=&#34;color:#66d9ef&#34;&gt;u8&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; rng.gen();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; rand3: &lt;span style=&#34;color:#66d9ef&#34;&gt;u8&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; rng.gen();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    format!(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;{:02X}{:02X}{:02X}7C{:02X}{:02X}{:02X}{:02X}&amp;#34;&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rand1,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rand2 &lt;span style=&#34;color:#f92672&#34;&gt;^&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;0x7c&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        &lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;rand1,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rand2,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rand3,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rand3 &lt;span style=&#34;color:#f92672&#34;&gt;^&lt;/span&gt; &lt;span style=&#34;color:#ae81ff&#34;&gt;7&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;        rand1 &lt;span style=&#34;color:#f92672&#34;&gt;^&lt;/span&gt; &lt;span style=&#34;color:#f92672&#34;&gt;!&lt;/span&gt;rand3
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    )
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Burası da orijinal kodun tamamen kopyası, 3 adet 0 ile 255 arası rastgele değer oluşturuyoruz (u8 = unsigned char = 0-255 arası değer) yalnız dikkatli bir okuyucuysanız ~ yerine ! kullandığımı farketmişsinizdir bunun sebebi Rust&amp;rsquo;da bit bazlı NOT operatörünün ~ yerine ! olması.&lt;/p&gt;
+&lt;h2 id=&#34;değeri-kayıt-defterine-yazma&#34;&gt;Değeri Kayıt Defterine Yazma&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;pub&lt;/span&gt; &lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;write_to_registry&lt;/span&gt;(
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    registry_key_name: &lt;span style=&#34;color:#66d9ef&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;str&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    license_key: &lt;span style=&#34;color:#66d9ef&#34;&gt;&amp;amp;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;str&lt;/span&gt;,
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;) -&amp;gt; Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;(), Box&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;dyn&lt;/span&gt; std::error::Error&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; hkcu &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; RegKey::predef(winreg::enums::HKEY_CURRENT_USER);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; (regkey, _) &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; hkcu.create_subkey(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Software\\MadeForNet\\HTTPDebuggerPro&amp;#34;&lt;/span&gt;)&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    regkey.set_value(registry_key_name, &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;license_key.to_string())&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Ok(())
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;p&gt;Bunda da çok açıklamaya gerek yok argüman olarak kayıt defteri için ismi ve lisans anahtarını alıyor ve Software\MadeForNet\HTTPDebuggerPro içine yazıyor&lt;/p&gt;
+&lt;h2 id=&#34;main-fonksiyonu&#34;&gt;Main Fonksiyonu&lt;/h2&gt;
+&lt;div class=&#34;highlight&#34;&gt;&lt;pre tabindex=&#34;0&#34; style=&#34;color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;&#34;&gt;&lt;code class=&#34;language-rust&#34; data-lang=&#34;rust&#34;&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;fn&lt;/span&gt; &lt;span style=&#34;color:#a6e22e&#34;&gt;main&lt;/span&gt;() -&amp;gt; Result&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;(), Box&lt;span style=&#34;color:#f92672&#34;&gt;&amp;lt;&lt;/span&gt;&lt;span style=&#34;color:#66d9ef&#34;&gt;dyn&lt;/span&gt; std::error::Error&lt;span style=&#34;color:#f92672&#34;&gt;&amp;gt;&amp;gt;&lt;/span&gt; {
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; version &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; get_httpdebugger_version()&lt;span style=&#34;color:#f92672&#34;&gt;?&lt;/span&gt;;
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; license_key &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_license_key();
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    &lt;span style=&#34;color:#66d9ef&#34;&gt;let&lt;/span&gt; registry_key_name &lt;span style=&#34;color:#f92672&#34;&gt;=&lt;/span&gt; create_registry_key_name(version);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    write_to_registry(&lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;registry_key_name, &lt;span style=&#34;color:#f92672&#34;&gt;&amp;amp;&lt;/span&gt;license_key);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    println!(&lt;span style=&#34;color:#e6db74&#34;&gt;&amp;#34;Cracked&amp;#34;&lt;/span&gt;);
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;    Ok(())
+&lt;/span&gt;&lt;/span&gt;&lt;span style=&#34;display:flex;&#34;&gt;&lt;span&gt;}
+&lt;/span&gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;h2 id=&#34;çıkış&#34;&gt;Çıkış&lt;/h2&gt;
+&lt;p&gt;Şimdilik bu kadardı ufak bir GUI eklenmiş halini görmek isterseniz gönderinin başındaki git deposuna bakabilirsiniz, iyi günler dilerim&lt;/p&gt;
+</content>
+    </item>
+    
     <item>
       <title>Rust Akıllı İşaretçiler</title>
       <link>https://usdogu.github.io/posts/rust-ak%C4%B1ll%C4%B1-i%C5%9Faret%C3%A7iler/</link>
@@ -17,7 +218,7 @@
       <guid>https://usdogu.github.io/posts/rust-ak%C4%B1ll%C4%B1-i%C5%9Faret%C3%A7iler/</guid>
       <description>Akıllı İşaretçiler (Smart Pointers) Nedir Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak String tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.
 Box&amp;lt;T&amp;gt; Akıllı İşaretçisi Verileri stack yerine heap üzerinde tutar. Aslında bu tipin çok da artıları yoktur
-Tutmak istediğiniz verinin boyutunun derleme anında bilinmediği durumlarda Kopyalamak istemediğiniz büyük miktarda verinin sahipliğini değiştirmek istediğiniz durumlarda kullanılabilir.</description>
+ Tutmak istediğiniz verinin boyutunun derleme anında bilinmediği durumlarda Kopyalamak istemediğiniz büyük miktarda verinin sahipliğini değiştirmek istediğiniz durumlarda kullanılabilir.</description>
       <content>&lt;h2 id=&#34;akıllı-i̇şaretçiler--smart-pointers--nedir&#34;&gt;Akıllı İşaretçiler (Smart Pointers) Nedir&lt;/h2&gt;
 &lt;p&gt;Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak
 &lt;a href=&#34;https://doc.rust-lang.org/std/string/struct.String.html&#34;&gt;String&lt;/a&gt; tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.&lt;/p&gt;

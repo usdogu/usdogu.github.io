@@ -1,0 +1,72 @@
+#+TITLE: Rust Akıllı İşaretçiler
+#+date: 2022-02-16
+#+hugo_tags: rust turkish
+#+hugo_base_dir: ../
+#+begin_description
+Rust Akıllı İşaretçileri üzerine notlar
+#+end_description
+
+
+* Akıllı İşaretçiler (Smart Pointers) Nedir
+Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak
+[[https://doc.rust-lang.org/std/string/struct.String.html][String]] tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.
+* [[https://doc.rust-lang.org/std/boxed/index.html][Box<T>]] Akıllı İşaretçisi
+Verileri stack yerine [[https://scribe.rip/yigit-xcodeproj/stack-ve-heap-arasindaki-fark-nedir-stack-vs-heap-c61e3d463dd7][heap]] üzerinde tutar. Aslında bu tipin çok da artıları yoktur
++ Tutmak istediğiniz verinin boyutunun derleme anında bilinmediği durumlarda
++ Kopyalamak istemediğiniz büyük miktarda verinin sahipliğini değiştirmek istediğiniz durumlarda kullanılabilir.
+Kullanımı:
+#+begin_src rust
+fn main() {
+    let b = Box::new(5);
+    println!("b = {}", b);
+}
+#+end_src
+şeklindedir. Eğer C/C++ bilginiz varsa heap üzerinde tuttuğumuz veriyi free tarzı bir yapı kullanarak neden deallocate etmediğimizi sorabilirsiniz, bunun sebebi Rust'ın değişken kapsam dışına çıktığında hem heap üzerindeki veriyi hem de stack üzerindeki heap'teki verinin adresini tutan pointerı otomatik olarak silmesidir.
+* [[https://doc.rust-lang.org/std/rc/index.html][Rc<T>]] Akıllı İşaretçisi
+Bir verinin birden fazla sahibi olduğu durumlarda kullanılır tutulan veri her klonlandığında referans sayısı bir artar ve tüm referanslar yok olduğunda tutulan veri silinir. Rc<T> tipini aile odasındaki bir TV olarak hayal edin, biri içeri girip TV izlemek istediğinde televizyonu açar ve diğerleri de odaya gelip televizyon izleyebilir ama son kişi de odadan çıkıcağında televizyonu kapatır çünkü artık kullanımda değildir değil mi? işte Rc<T> tipi de tam olarak bunu yapar.
+
+#+begin_src rust
+use std::rc::Rc;
+
+fn main() {
+    let a = Rc::new(1);
+    println!("a'nın başlangıçtaki referans sayısı = {}", Rc::strong_count(&a));
+    let _b = Rc::clone(&a);
+    println!("b'den sonra referans sayısı = {}", Rc::strong_count(&a));
+    {
+        let _c = Rc::clone(&a);
+        println!("c'den sonra referans sayısı = {}", Rc::strong_count(&a));
+    }
+    println!("c kapsam dışına çıktıktan sonra referans sayısı = {}", Rc::strong_count(&a));
+}
+#+end_src
+Kendi bilgisayarınızda bu örnek kodu deneyerek Rc'nin nasıl işlediğini daha iyi anlayabilirsiniz.
+
+Not: Rc<T> tipini sadece tek threadlı uygulamalarda kullanabilirsiniz diğerleri için [[https://doc.rust-lang.org/std/sync/struct.Arc.html][Arc]] yardımınıza koşar.
+* [[https://doc.rust-lang.org/std/cell/index.html][RefCell<T>]] Akıllı İşaretçisi
+RefCell'i anlatmadan önce biraz Interior mutability nedir diye bahsetmek gerekiyor. Interior mutability, mutable bir referansınız olmayan bir veriyi değiştirmeye izin veren bir tasarım desenidir normalde bu işlem Rust'ın kurallarına aykırıdır ama Cell<T> ve RefCell<T> tipleri sayesinde bunu yapabiliyoruz.
+
+RefCell kullanırken dikkat etmeniz gereken şey borrowing kurallarının derleme zamanında değil de çalışma zamanında yakalandığını unutmamaktır bu hataları fark etmeyi zorlaştırabilir bu yüzden gerçekten ihtiyacınız olmadığında RefCell yerine Cell kullanmak daha mantıklıdır.
+Aşağıdaki örnek programa bakalım:
+#+begin_src rust
+fn main() {
+    let x = 5;
+    let y = &mut x;
+}
+#+end_src
+mutable olarak belirlenmeyen bir değişkene mutable bir referans almaya çalıştığımızı anlayan derleyici kodu reddetti peki şunu deneyelim:
+#+begin_src rust
+use std::cell::RefCell;
+fn main() {
+    let x = RefCell::new(5);
+    let mut y = x.borrow_mut();
+    println!("değiştirmeden önce x'in değeri = {}",*y);
+    *y = 10;
+    println!("değiştirdikten sonra x'in değeri = {}",*y);
+}
+#+end_src
+çalıştı değil mi? işte interior mutability budur. Bu deseni örneğin sizi &self almaya zorlayan traitlerde selfi RefCell olarak tanımlayarak kullanabilirsiniz.
+
+
+* Kaynaklar
++ https://doc.rust-lang.org/book/ch15-00-smart-pointers.html
