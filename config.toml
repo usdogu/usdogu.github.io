@@ -2,7 +2,6 @@ baseurl = 'https://usdogu.github.io/'
 languageCode = 'en-us'
 #theme = "terminal"
 disqusShortname = "dogublog"
-
 [author]
   name = "Doğu Us"
   email = "uspro@disroot.org"
