@@ -23,5 +23,10 @@ jobs:
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
             commit_message: "Update CV"
+
+      - name: Dispatch CV compilation done event
+        uses: peter-evans/repository-dispatch@v2
+        with:
+          event-type: cv-compilation-done
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
