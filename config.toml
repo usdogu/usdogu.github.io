@@ -42,7 +42,7 @@ menu = [
     { url = "about", name = "About", slash = true, blank = false },
     { url = "archive", name = "Posts", slash = true, blank = false },
     { url = "tags", name = "Tags", slash = true, blank = false },
-    { url = "/static/cv.pdf", name = "CV", slash = true, blank = false }
+    { url = "cv.pdf", name = "CV", slash = false, blank = false }
 ]
 menu_footer = [
     { url = "about", name = "About", slash = true, blank = false },
