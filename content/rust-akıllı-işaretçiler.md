@@ -1,19 +1,19 @@
 +++
 title = "Rust Akıllı İşaretçiler"
-author = ["Doğu Us"]
 description = "Rust Akıllı İşaretçileri üzerine notlar"
-date = 2022-02-16
-tags = ["rust", "turkish"]
+date = "2022-02-16"
 draft = false
+[taxonomies]
+tags = ["rust", "turkish"]
 +++
 
-## Akıllı İşaretçiler (Smart Pointers) Nedir {#akıllı-i̇şaretçiler--smart-pointers--nedir}
+## Akıllı İşaretçiler (Smart Pointers) Nedir
 
 Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak
 [String](https://doc.rust-lang.org/std/string/struct.String.html) tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.
 
 
-## [Box&lt;T&gt;](https://doc.rust-lang.org/std/boxed/index.html) Akıllı İşaretçisi {#box-t-akıllı-i̇şaretçisi}
+## [Box&lt;T&gt;](https://doc.rust-lang.org/std/boxed/index.html) Akıllı İşaretçisi
 
 Verileri stack yerine [heap](https://scribe.rip/yigit-xcodeproj/stack-ve-heap-arasindaki-fark-nedir-stack-vs-heap-c61e3d463dd7) üzerinde tutar. Aslında bu tipin çok da artıları yoktur
 
@@ -32,7 +32,7 @@ fn main() {
 şeklindedir. Eğer C/C++ bilginiz varsa heap üzerinde tuttuğumuz veriyi free tarzı bir yapı kullanarak neden deallocate etmediğimizi sorabilirsiniz, bunun sebebi Rust'ın değişken kapsam dışına çıktığında hem heap üzerindeki veriyi hem de stack üzerindeki heap'teki verinin adresini tutan pointerı otomatik olarak silmesidir.
 
 
-## [Rc&lt;T&gt;](https://doc.rust-lang.org/std/rc/index.html) Akıllı İşaretçisi {#rc-t-akıllı-i̇şaretçisi}
+## [Rc&lt;T&gt;](https://doc.rust-lang.org/std/rc/index.html) Akıllı İşaretçisi
 
 Bir verinin birden fazla sahibi olduğu durumlarda kullanılır tutulan veri her klonlandığında referans sayısı bir artar ve tüm referanslar yok olduğunda tutulan veri silinir. Rc&lt;T&gt; tipini aile odasındaki bir TV olarak hayal edin, biri içeri girip TV izlemek istediğinde televizyonu açar ve diğerleri de odaya gelip televizyon izleyebilir ama son kişi de odadan çıkıcağında televizyonu kapatır çünkü artık kullanımda değildir değil mi? işte Rc&lt;T&gt; tipi de tam olarak bunu yapar.
 
@@ -57,7 +57,7 @@ Kendi bilgisayarınızda bu örnek kodu deneyerek Rc'nin nasıl işlediğini dah
 Not: Rc&lt;T&gt; tipini sadece tek threadlı uygulamalarda kullanabilirsiniz diğerleri için [Arc](https://doc.rust-lang.org/std/sync/struct.Arc.html) yardımınıza koşar.
 
 
-## [RefCell&lt;T&gt;](https://doc.rust-lang.org/std/cell/index.html) Akıllı İşaretçisi {#refcell-t-akıllı-i̇şaretçisi}
+## [RefCell&lt;T&gt;](https://doc.rust-lang.org/std/cell/index.html) Akıllı İşaretçisi
 
 RefCell'i anlatmadan önce biraz Interior mutability nedir diye bahsetmek gerekiyor. Interior mutability, mutable bir referansınız olmayan bir veriyi değiştirmeye izin veren bir tasarım desenidir normalde bu işlem Rust'ın kurallarına aykırıdır ama Cell&lt;T&gt; ve RefCell&lt;T&gt; tipleri sayesinde bunu yapabiliyoruz.
 
