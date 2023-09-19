@@ -1,41 +1,114 @@
-baseurl = 'https://usdogu.github.io/'
-languageCode = 'en-us'
-#theme = "terminal"
-disqusShortname = "dogublog"
-[author]
-  name = "Doğu Us"
-  email = "uspro@disroot.org"
+base_url = "https://usdogu.github.io"
+title = "Doğu Us' Blog"
+description = ""
+theme = "abridge"
 
-[params]
-  author = "Doğu Us"
-  title = "Doğu Us' Blog"
-  themeColor = "red"
-  centerTheme = true
-  readingTime = true
-  Toc = true
+default_language = "en"
+compile_sass = true
+minify_html = false
+build_search_index = true
+generate_feed = true
+taxonomies = [
+    { name = "tags", feed = true },
+]
 
-[languages]
-  [languages.en]
-    title = "Doğu Us' Blog"
-    owner = "Doğu Us"
-    keywords = "blog, technology, programming"
-    [languages.en.params.logo]
-      logoText = "USPRO"
-      logoHomeLink = "/"
-    [languages.en.menu]
-      [[languages.en.menu.main]]
-        identifier = "about"
-        name = "About"
-        url = "/about"
-      [[languages.en.menu.main]]
-        identifier = "analytics"
-        name = "Analytics"
-        url = "https://usdogu.goatcounter.com/"
-      [[languages.en.menu.main]]
-        identifier = "rss"
-        name = "RSS"
-        url = "/index.xml"
+feed_filename = "atom.xml"
+output_dir = "public"
+ignored_content = ["*.{graphml,xlsx}", "temp.*"]
+hard_link_static = false                         # set to true to hard link instead of copying, useful for very large files.
 
-[module]
-[[module.imports]]
-  path = 'github.com/panr/hugo-theme-terminal/v3'
+[search] # Options specific to elasticlunr search.
+index_format = "elasticlunr_json" # elasticlunr_json, elasticlunr_javascript
+include_title = true              # include title of page/section in index
+include_description = true        # include description of page/section in index
+include_content = true            # include rendered content of page/section in index
+
+[markdown]
+highlight_code = true
+highlight_theme = "css"
+render_emoji = false
+external_links_target_blank = true # rel="noopener"
+external_links_no_follow = false   # rel="nofollow"
+external_links_no_referrer = false # rel="noreferrer"
+smart_punctuation = false          # `...` to `…`, `"quote"` to `“curly”` etc
+
+[extra]
+date_locale = "en_US"
+language_code = "en-US"
+flag.en = "🇬🇧"
+
+
+menu = [
+    { url = "about", name = "About", slash = true, blank = false },
+    { url = "archive", name = "Posts", slash = true, blank = false },
+    { url = "tags", name = "Tags", slash = true, blank = false },
+]
+menu_footer = [
+    { url = "about", name = "About", slash = true, blank = false },
+    { url = "contact", name = "Contact", slash = true, blank = false },
+    { url = "privacy", name = "Privacy", slash = true, blank = false },
+    { url = "sitemap.xml", name = "Sitemap", slash = false, blank = true },
+]
+
+recent = true     # TOC / index
+recent_items = 10
+
+meta_index = { position = "bottom", size = "s90", author = false, readtime = false, readstring = "min", date = true, updated = false, categories_tags = true, divider = " " }
+meta_post = { position = "top", size = "s95", author = true, readtime = false, readstring = "min read", date = true, updated = true, categories_tags = true, divider = " " }
+
+hide_section_dates = false        # hides the date for sections that use posts.html as their template.
+hide_page_nextprev_titles = false # hides the next/previous titles for pages that use page.html as their template.
+title_size_index = "s85"          # size: s95, s90, s85, s80, s75, s70, false(full size)
+footer_size = "s90"               # size: s95, s90, s85, s80, s75, s70, false(full size)
+footer_credit = true
+
+sitedesc = false # enables or disables the display of the site description below the logo.
+headhr = false   # show or hide horizontal rule below header
+foothr = true    # show or hide horizontal rule above footer
+
+seo = false # enable or disable seo-related meta tags: opengraph, facebook, twitter
+
+
+###############################################################################
+### Footer social links; these are used in macros/social.html
+###   https://github.com/Jieiku/abridge/blob/master/templates/macros/social.html
+###############################################################################
+
+feed = true                                # this adds the RSS feed icon in the footer.
+mail = "uspro@disroot.org"
+mastodon = "https://fosstodon.org/@usdogu"
+twitter = "usdogu"
+linkedin = "usdogu"
+github = "usdogu"
+
+
+online_url = "https://usdogu.github.io"
+offline = false                         # implies uglyurls=true and integrity=false, when true NPM/node will automatically set the path for the base_url, it will build the site, then set the base_url back to what it was.
+
+uglyurls = false # if set to true then links are generated with the full path. eg https://abridge.netlify.app/index.html
+integrity = true # increases site security, should normally be true. (setting to false is useful during js development)
+js_bundle = true # multiple javascript files combined into a single file (setting to false is useful during js development)
+
+js_copycode = true           # The copy button on code blocks that allows you to copy them to the clipboard.
+js_email_encode = true       # obfuscates email address in footer
+js_prestyle = true           # used to preload: FontAwesome, Katex, external Google Fonts
+js_switcher = true           # The button that allows manually changing between light/dark mode.
+js_switcher_default = "dark" # default nojs switcher mode: dark, light (make sure to also set $switcherDefault in abridge.scss)
+
+search_library = 'elasticlunr'
+stylesheets = ["abridge.css"]
+
+pwa = false # true to load the service worker
+
+###############################################################################
+### Favicons, comment out a line to disable loading some or all of these if needed.
+###############################################################################
+
+favicon_theme_color = "#333333"
+favicon_ms_color = "#333333"
+favicon_mask = "safari-pinned-tab.svg" # safari-pinned-tab.svg
+favicon_mask_color = "#ff9900"
+favicon_svg = "favicon.svg"            # favicon.svg
+favicon180 = "apple-touch-icon.png"    # apple-touch-icon.png
+favicon32 = "favicon-32x32.png"        # favicon-32x32.png
+favicon16 = "favicon-16x16.png"        # favicon-16x16.png

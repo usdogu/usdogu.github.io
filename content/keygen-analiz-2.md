@@ -1,10 +1,10 @@
 +++
 title = "Keygen Analizi - Bölüm 2"
-author = "Doğu Us"
 description = "Bir keygeni IDA Pro ve x64dbg ile analiz edip Rust ile baştan yazıyoruz - Bölüm 2"
 date = "2022-09-11"
-tags = ["reversing", "turkish"]
 draft = false
+[taxonomies]
+tags = ["reversing", "turkish"]
 +++
 
 ## Giriş
