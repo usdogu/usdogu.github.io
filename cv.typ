@@ -11,11 +11,12 @@
 #link("mailto:usdogu@gmail.com") |
 #link("https://github.com/usdogu")[github.com/usdogu] | #link("https://www.linkedin.com/in/usdogu/")[linkedin.com/in/usdogu]
 
-== Education
+/* == Education
 #categoryline()
 
 *Ödemiş Anatolian High School* #h(1fr) 2022/09 -- 2026/06 (Expected) \
 High School Diploma #h(1fr) İzmir, Turkey \
+*/
 
 /* == Work Experience
 #categoryline()
