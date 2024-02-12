@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <script src="https://usdogu.github.io/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://usdogu.github.io/abridge.css?h=7957c72b25d9220ab4a8" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script defer src="https://usdogu.github.io/js/abridge_nopwa.min.js?h=3d0f9fd3e1c29076520c" integrity="sha384-Gutp+qbcKb8Gpecue9fZpAS1QYfjALEOMzwRVs/+at+OQQvnalZ1jAWqBKEoIWAh"></script>
+  <meta name="base" content="https://usdogu.github.io" />
+  <link rel="alternate" type="application/atom+xml" title="Doğu Us&#x27; Blog Atom/RSS Feed" href="https://usdogu.github.io/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Rust Akıllı İşaretçiler | Doğu Us' Blog</title>
+  <meta name="copyright" content="Doğu Us&#x27; Blog" />
+  <meta name="description" content="Rust Akıllı İşaretçileri üzerine notlar" />
+  <link rel="canonical" href="https://usdogu.github.io/rust-akilli-isaretciler/" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="mask-icon" href="https://usdogu.github.io/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="icon" type="image/svg+xml" href="https://usdogu.github.io/favicon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://usdogu.github.io/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://usdogu.github.io/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://usdogu.github.io/favicon-16x16.png" />
+  <noscript><link rel="stylesheet" href="https://usdogu.github.io/nojs.css" /></noscript>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><h1><a href="https://usdogu.github.io">Doğu Us' Blog</a></h1></div>
+      <div>
+        <a href="https://usdogu.github.io/about/"> About </a><a href="https://usdogu.github.io/archive/"> Posts </a><a href="https://usdogu.github.io/tags/"> Tags </a><a href="https://usdogu.github.io/cv.pdf"> CV </a><i type="reset" id="mode" class="js svgs adjust"></i>
+      </div>
+      <div>
+        <form autocomplete=off class="js" name="goSearch" id="searchbox">
+          <div class="searchd">
+            <input id="searchinput" type="text" placeholder="Search" title="Search" />
+            <button type="submit" title="Search" class="svgs search"></button>
+          </div>
+          <div class="results"><div id="suggestions"></div></div>
+        </form>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://usdogu.github.io/rust-akilli-isaretciler/">Rust Akıllı İşaretçiler</a></h1>
+      <span class="s95"><span class="hpad"> </span>February 16, 2022<span class="hpad"> </span> #<a href="https://usdogu.github.io/tags/rust/">rust</a>  #<a href="https://usdogu.github.io/tags/turkish/">turkish</a> </span>
+
+<h2 id="akilli-isaretciler-smart-pointers-nedir">Akıllı İşaretçiler (Smart Pointers) Nedir</h2>
+<p>Aslında bunlar normal işaretçilerden çok da farklı değiller sadece işaret ettikleri veriye ek olarak üst veriler taşıyorlar. Örnek olarak
+<a rel="noopener" target="_blank" href="https://doc.rust-lang.org/std/string/struct.String.html">String</a> tipini ele alalım bu tip bir byte dizisini tutmasının yanı sıra uzunluk ve kapasite bilgilerini de tutar, genel olarak akıllı işaretçilerin normal işaretçilerden farkı budur.</p>
+<h2 id="box-t-akilli-isaretcisi"><a rel="noopener" target="_blank" href="https://doc.rust-lang.org/std/boxed/index.html">Box&lt;T&gt;</a> Akıllı İşaretçisi</h2>
+<p>Verileri stack yerine <a rel="noopener" target="_blank" href="https://scribe.rip/yigit-xcodeproj/stack-ve-heap-arasindaki-fark-nedir-stack-vs-heap-c61e3d463dd7">heap</a> üzerinde tutar. Aslında bu tipin çok da artıları yoktur</p>
+<ul>
+<li>Tutmak istediğiniz verinin boyutunun derleme anında bilinmediği durumlarda</li>
+<li>Kopyalamak istemediğiniz büyük miktarda verinin sahipliğini değiştirmek istediğiniz durumlarda kullanılabilir.</li>
+</ul>
+<p>Kullanımı:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">main</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-storage z-type z-rust">let</span> b <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-support z-type z-rust">Box</span><span class="z-meta z-path z-rust"><span class="z-punctuation z-accessor z-rust">::</span></span>new<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-constant z-numeric z-integer z-decimal z-rust">5</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+    <span class="z-support z-macro z-rust">println!</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>b = <span class="z-constant z-other z-placeholder z-rust">{}</span><span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-separator z-rust">,</span> b<span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>şeklindedir. Eğer C/C++ bilginiz varsa heap üzerinde tuttuğumuz veriyi free tarzı bir yapı kullanarak neden deallocate etmediğimizi sorabilirsiniz, bunun sebebi Rust'ın değişken kapsam dışına çıktığında hem heap üzerindeki veriyi hem de stack üzerindeki heap'teki verinin adresini tutan pointerı otomatik olarak silmesidir.</p>
+<h2 id="rc-t-akilli-isaretcisi"><a rel="noopener" target="_blank" href="https://doc.rust-lang.org/std/rc/index.html">Rc&lt;T&gt;</a> Akıllı İşaretçisi</h2>
+<p>Bir verinin birden fazla sahibi olduğu durumlarda kullanılır tutulan veri her klonlandığında referans sayısı bir artar ve tüm referanslar yok olduğunda tutulan veri silinir. Rc&lt;T&gt; tipini aile odasındaki bir TV olarak hayal edin, biri içeri girip TV izlemek istediğinde televizyonu açar ve diğerleri de odaya gelip televizyon izleyebilir ama son kişi de odadan çıkıcağında televizyonu kapatır çünkü artık kullanımda değildir değil mi? işte Rc&lt;T&gt; tipi de tam olarak bunu yapar.</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">std<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-path z-rust">rc<span class="z-punctuation z-accessor z-rust">::</span></span>Rc<span class="z-punctuation z-terminator z-rust">;</span>
+
+<span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">main</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-storage z-type z-rust">let</span> a <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">Rc<span class="z-punctuation z-accessor z-rust">::</span></span>new<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-constant z-numeric z-integer z-decimal z-rust">1</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+    <span class="z-support z-macro z-rust">println!</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>a&#39;nın başlangıçtaki referans sayısı = <span class="z-constant z-other z-placeholder z-rust">{}</span><span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-separator z-rust">,</span> <span class="z-meta z-path z-rust">Rc<span class="z-punctuation z-accessor z-rust">::</span></span>strong_count<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span>a</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+    <span class="z-storage z-type z-rust">let</span> _b <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">Rc<span class="z-punctuation z-accessor z-rust">::</span></span>clone<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span>a</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+    <span class="z-support z-macro z-rust">println!</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>b&#39;den sonra referans sayısı = <span class="z-constant z-other z-placeholder z-rust">{}</span><span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-separator z-rust">,</span> <span class="z-meta z-path z-rust">Rc<span class="z-punctuation z-accessor z-rust">::</span></span>strong_count<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span>a</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+    <span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+        <span class="z-storage z-type z-rust">let</span> _c <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">Rc<span class="z-punctuation z-accessor z-rust">::</span></span>clone<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span>a</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+        <span class="z-support z-macro z-rust">println!</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>c&#39;den sonra referans sayısı = <span class="z-constant z-other z-placeholder z-rust">{}</span><span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-separator z-rust">,</span> <span class="z-meta z-path z-rust">Rc<span class="z-punctuation z-accessor z-rust">::</span></span>strong_count<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span>a</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+    </span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span>
+    <span class="z-support z-macro z-rust">println!</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>c kapsam dışına çıktıktan sonra referans sayısı = <span class="z-constant z-other z-placeholder z-rust">{}</span><span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-separator z-rust">,</span> <span class="z-meta z-path z-rust">Rc<span class="z-punctuation z-accessor z-rust">::</span></span>strong_count<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-keyword z-operator z-bitwise z-rust">&amp;</span>a</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>Kendi bilgisayarınızda bu örnek kodu deneyerek Rc'nin nasıl işlediğini daha iyi anlayabilirsiniz.</p>
+<p>Not: Rc&lt;T&gt; tipini sadece tek threadlı uygulamalarda kullanabilirsiniz diğerleri için <a rel="noopener" target="_blank" href="https://doc.rust-lang.org/std/sync/struct.Arc.html">Arc</a> yardımınıza koşar.</p>
+<h2 id="refcell-t-akilli-isaretcisi"><a rel="noopener" target="_blank" href="https://doc.rust-lang.org/std/cell/index.html">RefCell&lt;T&gt;</a> Akıllı İşaretçisi</h2>
+<p>RefCell'i anlatmadan önce biraz Interior mutability nedir diye bahsetmek gerekiyor. Interior mutability, mutable bir referansınız olmayan bir veriyi değiştirmeye izin veren bir tasarım desenidir normalde bu işlem Rust'ın kurallarına aykırıdır ama Cell&lt;T&gt; ve RefCell&lt;T&gt; tipleri sayesinde bunu yapabiliyoruz.</p>
+<p>RefCell kullanırken dikkat etmeniz gereken şey borrowing kurallarının derleme zamanında değil de çalışma zamanında yakalandığını unutmamaktır bu hataları fark etmeyi zorlaştırabilir bu yüzden gerçekten ihtiyacınız olmadığında RefCell yerine Cell kullanmak daha mantıklıdır.
+Aşağıdaki örnek programa bakalım:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">main</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-storage z-type z-rust">let</span> x <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">5</span><span class="z-punctuation z-terminator z-rust">;</span>
+    <span class="z-storage z-type z-rust">let</span> y <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-keyword z-operator z-bitwise z-rust">&amp;</span><span class="z-storage z-modifier z-rust">mut</span> x<span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>mutable olarak belirlenmeyen bir değişkene mutable bir referans almaya çalıştığımızı anlayan derleyici kodu reddetti peki şunu deneyelim:</p>
+<pre data-lang="rust" class="language-rust z-code"><code class="language-rust" data-lang="rust"><span class="z-source z-rust"><span class="z-keyword z-other z-rust">use</span> <span class="z-meta z-path z-rust">std<span class="z-punctuation z-accessor z-rust">::</span></span><span class="z-meta z-path z-rust">cell<span class="z-punctuation z-accessor z-rust">::</span></span>RefCell<span class="z-punctuation z-terminator z-rust">;</span>
+<span class="z-meta z-function z-rust"><span class="z-meta z-function z-rust"><span class="z-storage z-type z-function z-rust">fn</span> </span><span class="z-entity z-name z-function z-rust">main</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-begin z-rust">(</span></span><span class="z-meta z-function z-rust"><span class="z-meta z-function z-parameters z-rust"><span class="z-punctuation z-section z-parameters z-end z-rust">)</span></span></span></span><span class="z-meta z-function z-rust"> </span><span class="z-meta z-function z-rust"><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-begin z-rust">{</span>
+    <span class="z-storage z-type z-rust">let</span> x <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-meta z-path z-rust">RefCell<span class="z-punctuation z-accessor z-rust">::</span></span>new<span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span><span class="z-constant z-numeric z-integer z-decimal z-rust">5</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+    <span class="z-storage z-type z-rust">let</span> <span class="z-storage z-modifier z-rust">mut</span> y <span class="z-keyword z-operator z-assignment z-rust">=</span> x<span class="z-punctuation z-accessor z-dot z-rust">.</span><span class="z-support z-function z-rust">borrow_mut</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+    <span class="z-support z-macro z-rust">println!</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>değiştirmeden önce x&#39;in değeri = <span class="z-constant z-other z-placeholder z-rust">{}</span><span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-separator z-rust">,</span><span class="z-keyword z-operator z-arithmetic z-rust">*</span>y<span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+    <span class="z-keyword z-operator z-arithmetic z-rust">*</span>y <span class="z-keyword z-operator z-assignment z-rust">=</span> <span class="z-constant z-numeric z-integer z-decimal z-rust">10</span><span class="z-punctuation z-terminator z-rust">;</span>
+    <span class="z-support z-macro z-rust">println!</span><span class="z-meta z-group z-rust"><span class="z-punctuation z-section z-group z-begin z-rust">(</span></span><span class="z-meta z-group z-rust"><span class="z-string z-quoted z-double z-rust"><span class="z-punctuation z-definition z-string z-begin z-rust">&quot;</span>değiştirdikten sonra x&#39;in değeri = <span class="z-constant z-other z-placeholder z-rust">{}</span><span class="z-punctuation z-definition z-string z-end z-rust">&quot;</span></span></span><span class="z-meta z-group z-rust"><span class="z-punctuation z-separator z-rust">,</span><span class="z-keyword z-operator z-arithmetic z-rust">*</span>y<span class="z-punctuation z-section z-group z-end z-rust">)</span></span><span class="z-punctuation z-terminator z-rust">;</span>
+</span><span class="z-meta z-block z-rust"><span class="z-punctuation z-section z-block z-end z-rust">}</span></span></span>
+</span></code></pre>
+<p>çalıştı değil mi? işte interior mutability budur. Bu deseni örneğin sizi &amp;self almaya zorlayan traitlerde selfi RefCell olarak tanımlayarak kullanabilirsiniz.</p>
+<h2 id="kaynaklar">Kaynaklar</h2>
+<ul>
+<li><a rel="noopener" target="_blank" href="https://doc.rust-lang.org/book/ch15-00-smart-pointers.html">https://doc.rust-lang.org/book/ch15-00-smart-pointers.html</a></li>
+</ul>
+
+      <nav>
+        <div>
+          <a href="https://usdogu.github.io/keygen-analiz-2/">&#8249; Keygen Analizi - Bölüm 2</a>
+        </div>
+        <div>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <hr />
+    <div class="c">
+      <nav><div><a type="application/atom+xml" href="https://usdogu.github.io/atom.xml" target="_blank" title="Doğu Us&#x27; Blog Atom/RSS Feed"><i type="Button" class="svg rss" title="Doğu Us&#x27; Blog Atom/RSS Feed"></i></a><a class="js m-protected" href="#dXNwcm9AZGlzcm9vdC5vcmc=" target="_blank" title="Mail"><i type="Button" class="svg mail" title="Mail"></i></a><a href="https://fosstodon.org/@usdogu" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://twitter.com/usdogu/" target="_blank" title="Twitter"><i type="Button" class="svg twitter" title="Twitter"></i></a><a href="https://www.linkedin.com/in/usdogu/" target="_blank" title="LinkedIn"><i type="Button" class="svg linkedin" title="LinkedIn"></i></a><a href="https://github.com/usdogu/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <p class="s90"> &copy; 2024 Doğu Us' Blog</p>
+      <nav>
+        <a class="s90" href="https://usdogu.github.io/about/"> About </a>
+        <a class="s90" href="https://usdogu.github.io/contact/"> Contact </a>
+        <a class="s90" href="https://usdogu.github.io/privacy/"> Privacy </a>
+        <a class="s90" href="https://usdogu.github.io/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+      <p class="s90">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> and <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>

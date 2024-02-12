@@ -1,0 +1,156 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+  <script src="https://usdogu.github.io/js/theme.min.js" integrity="sha384-pb++s6uBRKaQv+iAXpgA/H3IlpLZdO14tTwuCI7uXmz4aaZdByoCcM+6BhynMq/1"></script>
+  <link rel="stylesheet" href="https://usdogu.github.io/abridge.css?h=7957c72b25d9220ab4a8" />
+  <meta charset="utf-8" />
+  <meta http-equiv="x-ua-compatible" content="ie=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script defer src="https://usdogu.github.io/js/abridge_nopwa.min.js?h=3d0f9fd3e1c29076520c" integrity="sha384-Gutp+qbcKb8Gpecue9fZpAS1QYfjALEOMzwRVs/+at+OQQvnalZ1jAWqBKEoIWAh"></script>
+  <meta name="base" content="https://usdogu.github.io" />
+  <link rel="alternate" type="application/atom+xml" title="Doğu Us&#x27; Blog Atom/RSS Feed" href="https://usdogu.github.io/atom.xml" />
+  <meta name="robots" content="index, follow" />
+  <meta name="googlebot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <meta name="bingbot" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
+  <title>Keygen Analizi - Bölüm 1 | Doğu Us' Blog</title>
+  <meta name="copyright" content="Doğu Us&#x27; Blog" />
+  <meta name="description" content="Bir keygeni IDA Pro ve x64dbg ile analiz edip Rust ile baştan yazıyoruz - Bölüm 1" />
+  <link rel="canonical" href="https://usdogu.github.io/keygen-analiz-1/" />
+  <meta name="HandheldFriendly" content="True" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+  <meta name="theme-color" content="#333333" />
+  <meta name="msapplication-TileColor" content="#333333" />
+  <link rel="mask-icon" href="https://usdogu.github.io/safari-pinned-tab.svg" color="#ff9900" />
+  <link rel="icon" type="image/svg+xml" href="https://usdogu.github.io/favicon.svg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="https://usdogu.github.io/apple-touch-icon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="https://usdogu.github.io/favicon-32x32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="https://usdogu.github.io/favicon-16x16.png" />
+  <noscript><link rel="stylesheet" href="https://usdogu.github.io/nojs.css" /></noscript>
+</head>
+<body>
+  <header>
+    <nav>
+      <div><h1><a href="https://usdogu.github.io">Doğu Us' Blog</a></h1></div>
+      <div>
+        <a href="https://usdogu.github.io/about/"> About </a><a href="https://usdogu.github.io/archive/"> Posts </a><a href="https://usdogu.github.io/tags/"> Tags </a><a href="https://usdogu.github.io/cv.pdf"> CV </a><i type="reset" id="mode" class="js svgs adjust"></i>
+      </div>
+      <div>
+        <form autocomplete=off class="js" name="goSearch" id="searchbox">
+          <div class="searchd">
+            <input id="searchinput" type="text" placeholder="Search" title="Search" />
+            <button type="submit" title="Search" class="svgs search"></button>
+          </div>
+          <div class="results"><div id="suggestions"></div></div>
+        </form>
+      </div>
+    </nav>
+  </header>
+  <main>
+    <article>
+      <h1><a href="https://usdogu.github.io/keygen-analiz-1/">Keygen Analizi - Bölüm 1</a></h1>
+      <span class="s95"><span class="hpad"> </span>September 11, 2022<span class="hpad"> </span> #<a href="https://usdogu.github.io/tags/reversing/">reversing</a>  #<a href="https://usdogu.github.io/tags/turkish/">turkish</a> </span>
+
+<h2 id="giris">Giriş</h2>
+<p>Http Debugger Pro kullanırken yenik düştüğüm merakım yüzünden bu gönderiyi yazıyorum</p>
+<p>kendileri yaparak takip etmek isteyenler için:</p>
+<p>Dosya: https://cloud.disroot.org/s/w33G9eCFne9NibH</p>
+<p>VT: https://www.virustotal.com/gui/file/2234957b4842355a4c3d1295dd9d89c9cb0949a15ad41ddee30cf93c62c8b0e2</p>
+<h2 id="ilk-bakis">İlk Bakış</h2>
+<p>Dosyayı IDA'ya atıp start fonksiyonunu decompile edelim bakalım neler dönüyor..
+<img src="https://usdogu.github.io/keygen-analiz-1/./img/ida_ilk_bakis.JPG" alt="IDA ilk bakış" /></p>
+<p>Diğerlerini bilmem ama sub_401000 kesinlikle kayıt defteri ile alakalı bişeyler yapıyor daha detaylı inceleyelim</p>
+<h2 id="sub-401000">sub_401000</h2>
+<p><img src="https://usdogu.github.io/keygen-analiz-1/./img/sub_401000.JPG" alt="kayıt defteri okuyucu" /></p>
+<p>Tam da düşündüğüm gibi ilk verilen argümanı &quot;subkey&quot; ikinciyi değer adı olarak kullanarak uygulama versiyonunu üçüncü argümana yazıyor. Benim bu gönderiyi yazarken kullandığım sürümde yazan değer &quot;HTTP Debugger 9.0.0.12&quot; şeklinde, bakalım bu veri nasıl kullanılıcak. Fonksiyonu get_app_version, üçüncü argümanı app_version olarak yeniden adlandırıp devam ediyorum</p>
+<h2 id="sub-4013d0">sub_4013D0</h2>
+<p><img src="https://usdogu.github.io/keygen-analiz-1/./img/sub_4013D0.JPG" alt="sub_4013D0" /></p>
+<p>Bu arkadaşımız bir sonraki çağrılan fonksiyon, uygulama versiyonunu ise argüman olarak alıyor. Buna bir süre boş boş baktıktan sonra bunu (şimdilik) statik olarak anlamaya çalışıcak kadar ruh hastası olmadığıma karar verdim x64dbg üzerinden devam ediyoruz :D</p>
+<h2 id="sub-4013d0-dinamik-analiz">sub_4013D0 Dinamik Analiz</h2>
+<video width=100% controls>
+    <source src="./img/sub_4013D0.mp4" type="video/mp4">
+    Your browser does not support the video tag.  
+</video>
+<p>Burdan anladığım kadarıyla uygulama versiyonunun son 2 sayısını döndürüyor ama içimde bişey kaçırıyormuşum gibi bir his var yine de devam edelim</p>
+<h2 id="while-dongusu">While döngüsü</h2>
+<pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c"><span class="z-keyword z-control z-c">while</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span> <span class="z-keyword z-operator z-c">*</span>v4 <span class="z-keyword z-operator z-comparison z-c">!=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">32</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span>
+<span class="z-meta z-block z-c"><span class="z-punctuation z-section z-block z-begin z-c">{</span>
+    <span class="z-keyword z-control z-c">if</span> <span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span> <span class="z-keyword z-operator z-c">*</span>v4 <span class="z-keyword z-operator z-comparison z-c">!=</span> <span class="z-constant z-numeric z-integer z-decimal z-c">46</span> <span class="z-punctuation z-section z-group z-end z-c">)</span></span>
+      String<span class="z-meta z-brackets z-c"><span class="z-punctuation z-section z-brackets z-begin z-c">[</span>v5<span class="z-keyword z-operator z-arithmetic z-c">++</span><span class="z-punctuation z-section z-brackets z-end z-c">]</span></span> <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-keyword z-operator z-c">*</span>v4<span class="z-punctuation z-terminator z-c">;</span>
+    <span class="z-keyword z-operator z-arithmetic z-c">--</span>v4<span class="z-punctuation z-terminator z-c">;</span>
+<span class="z-punctuation z-section z-block z-end z-c">}</span></span>
+</span></code></pre>
+<p>şeklinde bi döngümüz var, sıçtık galiba... Bir önceki fonksiyonun char* döndürdüğünü gördüğümde IDA yanlış decompile etmiştir diyip geçmiştim ama harbiden yazı döndürüyor gibi 32 ve 46 ASCII'de  sırasıyla boşluğa ve nokta karakterine denk geliyor yani bi önceki fonksiyonun son 2 sayıyı değil &quot;HTTP Debugger&quot; kısmını silip sadece 9.0.0.12 döndürüyor olması çok kuvvetli ihtimal. Fonksiyonun 9.0.0.12 döndürdüğünü varsayıp devam edelim. Bu kod parçası nokta karakteri olmayan her karakteri String isimli bir değişkene koyuyor ve sonuç olarak 9.0.0.12 değeri 90012 oluyor, Bu değişkeni version_cleaned olarak yeniden adlandırıp devam ediyorum</p>
+<p>Sonradan gelen not: Bu kod yanlış decompile edilmiş ++v4 olması gerekiyor assembly'e göre.</p>
+<p>Okuyucuya not: Kafanızı monitöre vurmadan önce decompilerlara güvenilmemesi gerektiğini öğrenin.</p>
+<h2 id="sub-401420">sub_401420</h2>
+<p><img src="https://usdogu.github.io/keygen-analiz-1/./img/sub_401420.JPG" alt="sub_401420" /></p>
+<p>Hiçbir şey dememe gerek yok x64dbg üzerinden devam ediyoruz :D</p>
+<h2 id="sub-401420-dinamik-analiz">sub_401420 Dinamik Analiz</h2>
+<video width=100% controls>
+    <source src="./img/sub_401420.mp4" type="video/mp4">
+    Your browser does not support the video tag.  
+</video>
+<p>Bu kanser şeyin sırf benim gibilere vakit kaybettirmek için konulduğuna %99,99 eminim noktasız versiyon değeri geri dönüyor, devaaam</p>
+<h2 id="sub-401390">sub_401390</h2>
+<p><img src="https://usdogu.github.io/keygen-analiz-1/./img/sub_401390.JPG" alt="sub_401390" /></p>
+<p>Yine zamanım çalınıcak gibi hissediyorum ama x64dbg geçtik yine</p>
+<h2 id="sub-401390-dinamik-analiz">sub_401390 Dinamik Analiz</h2>
+<video width=100% controls>
+    <source src="./img/sub_401390.mp4" type="video/mp4">
+    Your browser does not support the video tag.  
+</video>
+<p>Ömrümü yediğim şeye bak amk yine versiyon döndürdü neyse devam ediyoruz</p>
+<h2 id="sub-40123e">sub_40123E</h2>
+<p><img src="https://usdogu.github.io/keygen-analiz-1/./img/sub_40123E.JPG" alt="sub_40123E" /></p>
+<p>Bak bu ilginçmiş işte C diskinin seri numarasını çekip SN ile başlayan bir yazıya seri numarası ve uygulama versiyonunu içeren bir dizi bit işlemine sokuyor ve değer ValuName isimli değişkene atanıyor. Bu kısım büyük ihtimal direkt Http Debugger analiz edilerek bulundu, bizi sinir krizine girmek zorunda bırakmadıkları için teşekkür ediyor ve devam ediyoruz</p>
+<h2 id="sub-4011c1">sub_4011C1</h2>
+<p><img src="https://usdogu.github.io/keygen-analiz-1/./img/sub_4011C1.JPG" alt="sub_4011C1" /></p>
+<p>Sonunda lisans üretimine gelebildik çok da fantazili bişeyler yokmuş hayal kırıklığına uğramadım desem yalan olur :D</p>
+<p>3 adet 0 ile 254 arası sayı üretiliyor ve değişik bit işlemlerinin değerleri hex olarak Data isimli değişkene atanıyor</p>
+<h2 id="sub-4012d4">sub_4012D4</h2>
+<p><img src="https://usdogu.github.io/keygen-analiz-1/./img/sub_4012D4.JPG" alt="sub_4012D4" /></p>
+<p>Burada ValueName kayıt defterinde isim Data ise onun değeri olarak kullanılarak kayıt defterine yazılıyor</p>
+<h2 id="sondaki-kucuk-kod-parcacigi">Sondaki Küçük Kod Parçacığı</h2>
+<pre data-lang="c" class="language-c z-code"><code class="language-c" data-lang="c"><span class="z-source z-c">v6 <span class="z-keyword z-operator z-assignment z-c">=</span> <span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">__rdtsc</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+<span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">srand</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-meta z-function-call z-c"><span class="z-variable z-function z-c">HIDWORD</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-begin z-c">(</span></span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c">v6</span></span><span class="z-meta z-function-call z-c"><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span> <span class="z-keyword z-operator z-arithmetic z-c">^</span> v6</span><span class="z-meta z-group z-c"><span class="z-punctuation z-section z-group z-end z-c">)</span></span></span><span class="z-punctuation z-terminator z-c">;</span>
+</span></code></pre>
+<p>Bunun sayesinde iki satırda iki farklı şey öğrendim;</p>
+<ul>
+<li>__rdtsc fonksiyonu Windows makinelerde rtdsc assembly komutununu üretmeye yarıyormuş bu ise son yeniden başlatmadan sonra geçen işlemci döngü sayısını veriyormuş</li>
+<li>HIDWORD makrosu bir DWORD'ün son 2 baytını getirmeye yarıyormuş</li>
+</ul>
+<p>Yani bu kod parçası rastgele olma olasılığı çok yüksek olan bir değeri alıp bu değeri son 2 baytı ile XOR işlemine sokup gelen veriyi rastgele sayı üreticiye &quot;seed&quot; olarak kullanıyor. time(NULL) kullanan eziklere duyurulur :D</p>
+<h2 id="cikis">Çıkış</h2>
+<p>Şimdilik bu kadar bölüm ikide burdan öğrendiklerimizi kullanarak Rust ile baştan keygen yazmaya çalışıcaz</p>
+<p>Bu arada temizlenilmiş IDB dosyası için: https://cloud.disroot.org/s/cMR8J3FTzaxqcMJ</p>
+
+      <nav>
+        <div>
+        </div>
+        <div>
+          <a href="https://usdogu.github.io/keygen-analiz-2/"> Keygen Analizi - Bölüm 2 &#8250;</a>
+        </div>
+      </nav>
+    </article>
+  </main>
+  <footer>
+    <hr />
+    <div class="c">
+      <nav><div><a type="application/atom+xml" href="https://usdogu.github.io/atom.xml" target="_blank" title="Doğu Us&#x27; Blog Atom/RSS Feed"><i type="Button" class="svg rss" title="Doğu Us&#x27; Blog Atom/RSS Feed"></i></a><a class="js m-protected" href="#dXNwcm9AZGlzcm9vdC5vcmc=" target="_blank" title="Mail"><i type="Button" class="svg mail" title="Mail"></i></a><a href="https://fosstodon.org/@usdogu" target="_blank" title="Mastodon" rel="me"><i type="Button" class="svg mastodon" title="Mastodon"></i></a><a href="https://twitter.com/usdogu/" target="_blank" title="Twitter"><i type="Button" class="svg twitter" title="Twitter"></i></a><a href="https://www.linkedin.com/in/usdogu/" target="_blank" title="LinkedIn"><i type="Button" class="svg linkedin" title="LinkedIn"></i></a><a href="https://github.com/usdogu/" target="_blank" title="Github"><i type="Button" class="svg github" title="Github"></i></a></div></nav>
+      <p class="s90"> &copy; 2024 Doğu Us' Blog</p>
+      <nav>
+        <a class="s90" href="https://usdogu.github.io/about/"> About </a>
+        <a class="s90" href="https://usdogu.github.io/contact/"> Contact </a>
+        <a class="s90" href="https://usdogu.github.io/privacy/"> Privacy </a>
+        <a class="s90" href="https://usdogu.github.io/sitemap.xml" target="_blank"> Sitemap </a>
+      </nav>
+      <p class="s90">Powered by <a href="https://www.getzola.org/" target="_blank">Zola</a> and <a href="https://github.com/jieiku/abridge/" target="_blank">Abridge</a></p>
+    </div>
+  </footer><span class="topout">
+<span class="topleft"> </span><a href="#" class="top" title="Back to Top"><i class="svgs svgh angu"></i></a>
+</span>
+</body>
+</html>
